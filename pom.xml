@@ -53,6 +53,11 @@
         </developer>
     </developers>
 
+    <properties>
+        <pac4j.version>1.8.0-RC2-SNAPSHOT</pac4j.version>
+        <spring.version>4.2.1.RELEASE</spring.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -63,14 +68,18 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>4.2.1.RELEASE</version>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-core</artifactId>
-            <version>1.8.0-RC2-SNAPSHOT</version>
+            <version>${pac4j.version}</version>
         </dependency>
-
     </dependencies>
 
     <build>
