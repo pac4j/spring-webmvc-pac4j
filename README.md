@@ -33,9 +33,9 @@ It also supports many authorization checks, called [**authorizers**](https://git
 
 First, you need to add a dependency on this library as well as on the appropriate `pac4j` submodules. Then, you must define the [**clients**](https://github.com/pac4j/pac4j/wiki/Clients) for authentication and the [**authorizers**](https://github.com/pac4j/pac4j/wiki/Authorizers) to check authorizations.
 
-Define the `CallbackFilter` to finish authentication processes if you use indirect clients (like Facebook).
+Define the `CallbackController` to finish authentication processes if you use indirect clients (like Facebook).
 
-Use the `RequiresAuthenticationFilter` to secure the urls of your web application (using the `clientName` parameter for authentication and the `authorizerName` parameter for authorizations).
+Use the `RequiresAuthenticationInterceptor` to secure the urls of your web application (using the `clientName` parameter for authentication and the `authorizerName` parameter for authorizations).
 
 Just follow these easy steps:
 
@@ -47,8 +47,9 @@ You need to add a dependency on the `spring-webmvc-pac4j` library (<em>groupId</
 
 ### Define the configuration (`Config` + `Clients` + `XXXClient` + `Authorizer`)
 
-Each authentication mechanism (Facebook, Twitter, a CAS server...) is defined by a client (implementing the `org.pac4j.core.client.Client` interface). All clients must be gathered in a `org.pac4j.core.client.Clients` class.  
-They need to be gathered in a `org.pac4j.core.config.Config` class with the authorizers which will be used by the application. This can be defined either by a Spring context file or by a Spring configuration class.
+Each authentication mechanism (Facebook, Twitter, a CAS server...) is defined by a client (implementing the `org.pac4j.core.client.Client` interface). All clients must be gathered in a `org.pac4j.core.client.Clients` class.
+
+All `Clients` must be defined in a `org.pac4j.core.config.Config` object as well as the authorizers which will be used by the application. This can be setup either by a Spring context file or by a Spring configuration class.
 
 #### Spring context file:
 
@@ -179,6 +180,8 @@ public class Pac4jConfig {
 }
 ```
 
+"http://localhost:8080/callback" is the url of the callback endpoint (see below). It may not be defined for REST support / direct clients only.
+
 
 ### Define the callback endpoint (only for stateful / indirect authentication mechanisms)
 
@@ -273,7 +276,7 @@ This controller will be available on the `/logout` url unless you specify anothe
 
 The default url if the provided *url* parameter does not match the logout url pattern can be specified by the `pac4j.applicationLogout.defaultUrl` properties key (by default: `/`).
 
-The logout url pattern that the logout url must match can be specified by the `pac4j.applicationLogout.logoutUrlPattern` properties key (by default, only relative urls are allowed by default).
+The logout url pattern that the logout url must match can be specified by the `pac4j.applicationLogout.logoutUrlPattern` properties key (by default, only relative urls are allowed).
 
 
 ## Demos
