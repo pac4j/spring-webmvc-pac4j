@@ -54,7 +54,7 @@
     </developers>
 
     <properties>
-        <pac4j.version>1.8.0-RC2-SNAPSHOT</pac4j.version>
+        <pac4j.version>1.8.1-SNAPSHOT</pac4j.version>
         <spring.version>4.2.1.RELEASE</spring.version>
     </properties>
 
