@@ -197,7 +197,7 @@ It must be defined by scanning the `org.pac4j.springframework.web.CallbackContro
 
 This controller will be available on the `/callback` url unless you specify another mapping using the `pac4j.callback.mappingUrl` properties key.
 
-The default url logout where the user will be redirected after login if no url was originally requested can be specified by the `pac4j.callback.defaultUrl` properties key (by default: `/`).
+The default url where the user will be redirected after login if no url was originally requested can be specified by the `pac4j.callback.defaultUrl` properties key (by default: `/`).
 
 
 ### Protect an url (authentication + authorization)
