@@ -11,20 +11,15 @@ It supports most authentication mechanisms, called [**clients**](https://github.
 
 See the [authentication flows](https://github.com/pac4j/pac4j/wiki/Authentication-flows).
 
-| The authentication mechanism you want | The `pac4j-*` submodule you must use
-|---------------------------------------|-------------------------------------
+| The authentication mechanism you want | The `pac4j-*` submodule(s) you must use
+|---------------------------------------|----------------------------------------
 | OAuth (1.0 & 2.0): Facebook, Twitter, Google, Yahoo, LinkedIn, Github... | `pac4j-oauth`
-| CAS (1.0, 2.0, 3.0, SAML, logout, proxy, REST) | `pac4j-cas`
-| HTTP (form, basic auth, IP, header, cookie, GET/POST parameter) | `pac4j-http`
-| OpenID | `pac4j-openid`
+| CAS (1.0, 2.0, 3.0, SAML, logout, proxy) | `pac4j-cas`
 | SAML (2.0) | `pac4j-saml`
-| Google App Engine UserService | `pac4j-gae`
 | OpenID Connect (1.0) | `pac4j-oidc`
-| JWT | `pac4j-jwt`
-| LDAP | `pac4j-ldap`
-| Relational DB | `pac4j-sql`
-| MongoDB | `pac4j-mongo`
-| Stormpath | `pac4j-stormpath`
+| HTTP (form, basic auth, IP, header, cookie, GET/POST parameter)<br />+<br />JWT<br />or LDAP<br />or Relational DB<br />or MongoDB<br />or Stormpath<br />or CAS REST API| `pac4j-http`<br />+<br />`pac4j-jwt`<br />or `pac4j-ldap`<br />or `pac4j-sql`<br />or `pac4j-mongo`<br />or `pac4j-stormpath`<br />or `pac4j-cas`
+| Google App Engine UserService | `pac4j-gae`
+| OpenID | `pac4j-openid`
 
 It also supports many authorization checks, called [**authorizers**](https://github.com/pac4j/pac4j/wiki/Authorizers) available in the `pac4j-core` and `pac4j-http` submodules: role / permission checks, CSRF token validation...
 
@@ -270,13 +265,14 @@ The retrieved profile is at least a `CommonProfile`, from which you can retrieve
 
 ### Logout
 
-You can log out the current authenticated user using the `org.pac4j.springframework.web.ApplicationLogoutController` (defined by classpath scanning, like for the `CallbackController`) and by calling the logout url. A blank page is displayed by default unless an *url* parameter is provided. In that case, the user will be redirected to this specified url (if it matches the logout url pattern defined) or to the default logout url otherwise.
+You can log out the current authenticated user using the `org.pac4j.springframework.web.ApplicationLogoutController` (defined by classpath scanning, like for the `CallbackController`).
 
-This controller will be available on the `/logout` url unless you specify another mapping using the `pac4j.applicationLogout.mappingUrl` properties key.
+To perfom the logout, you must call the /logout url (or the url defined by the `pac4j.applicationLogout.mappingUrl` properties key). A blank page is displayed by default unless an *url* request parameter is provided. In that case, the user will be redirected to this specified url (if it matches the logout url pattern defined) or to the default logout url otherwise.
 
-The default url if the provided *url* parameter does not match the logout url pattern can be specified by the `pac4j.applicationLogout.defaultUrl` properties key (by default: `/`).
+The following properties key can be defined:
 
-The logout url pattern that the logout url must match can be specified by the `pac4j.applicationLogout.logoutUrlPattern` properties key (by default, only relative urls are allowed).
+- `pac4j.applicationLogout.defaultUrl` (optional): the default logout url if the provided *url* parameter does not match the logout url pattern (by default: /)
+- `pac4j.applicationLogout.logoutUrlPattern` (optional): the logout url pattern that the logout url must match (it's a security check, only relative urls are allowed by default).
 
 
 ## Demos
