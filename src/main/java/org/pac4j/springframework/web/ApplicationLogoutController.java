@@ -34,7 +34,6 @@ import java.util.regex.Pattern;
  * <p>After logout, the user is redirected to the url defined by the <i>url</i> parameter. If no url is provided, a blank page is displayed. If the url does not match the pattern, the default url is used.</p>
  * <p>The default url can be defined via the <code>pac4j.applicationLogout.defaultUrl</code> properties key.</p>
  * <p>The logout url pattern can be defined via the <code>pac4j.applicationLogout.logoutUrlPattern</code> properties key.</p>
- * <p>The mapped url for the logout is defined via the <code>pac4j.applicationLogout.mappingUrl</code> properties key (by default: <code>/logout</code>).</p>
  *
  * @author Jerome Leleu
  * @since 1.0.0
@@ -48,7 +47,7 @@ public class ApplicationLogoutController {
     @Value("${pac4j.applicationLogout.logoutUrlPattern:}")
     protected String logoutUrlPattern;
 
-    @RequestMapping("${pac4j.applicationLogout.mappingUrl:/logout}")
+    @RequestMapping("/logout")
     public String applicationLogout(final HttpServletRequest request, final HttpServletResponse response) {
 
         final WebContext context = new J2EContext(request, response);

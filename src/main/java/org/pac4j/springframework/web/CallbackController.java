@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * <p>This controller handles the callback from the identity provider to finish the authentication process.</p>
  * <p>The default url after login (if none has originally be requested) can be defined via the <code>pac4j.callback.defaultUrl</code> properties key.</p>
- * <p>The mapped url for the callback is defined via the <code>pac4j.callback.mappingUrl</code> properties key (by default: <code>/callback</code>).</p>
  *
  * @author Jerome Leleu
  * @since 1.0.0
@@ -57,7 +56,7 @@ public class CallbackController {
     @Autowired
     protected Config config;
 
-    @RequestMapping("${pac4j.callback.mappingUrl:/callback}")
+    @RequestMapping("/callback")
     public String callback(final HttpServletRequest request, final HttpServletResponse response) {
 
         final WebContext context = new J2EContext(request, response);

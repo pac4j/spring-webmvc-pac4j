@@ -195,9 +195,7 @@ It must be defined by scanning the `org.pac4j.springframework.web.CallbackContro
 @ComponentScan(basePackages = "org.pac4j.springframework.web")
 ```
 
-This controller will be available on the `/callback` url unless you specify another mapping using the `pac4j.callback.mappingUrl` properties key.
-
-The default url where the user will be redirected after login if no url was originally requested can be specified by the `pac4j.callback.defaultUrl` properties key (by default: `/`).
+This controller will be available on the `/callback` url. The default url where the user will be redirected after login if no url was originally requested can be specified by the `pac4j.callback.defaultUrl` properties key (by default: `/`).
 
 
 ### Protect an url (authentication + authorization)
@@ -267,7 +265,7 @@ The retrieved profile is at least a `CommonProfile`, from which you can retrieve
 
 You can log out the current authenticated user using the `org.pac4j.springframework.web.ApplicationLogoutController` (defined by classpath scanning, like for the `CallbackController`).
 
-To perfom the logout, you must call the /logout url (or the url defined by the `pac4j.applicationLogout.mappingUrl` properties key). A blank page is displayed by default unless an *url* request parameter is provided. In that case, the user will be redirected to this specified url (if it matches the logout url pattern defined) or to the default logout url otherwise.
+To perfom the logout, you must call the /logout url. A blank page is displayed by default unless an *url* request parameter is provided. In that case, the user will be redirected to this specified url (if it matches the logout url pattern defined) or to the default logout url otherwise.
 
 The following properties key can be defined:
 
