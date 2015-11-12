@@ -21,7 +21,7 @@ See the [authentication flows](https://github.com/pac4j/pac4j/wiki/Authenticatio
 | Google App Engine UserService | `pac4j-gae`
 | OpenID | `pac4j-openid`
 
-It also supports many authorization checks, called [**authorizers**](https://github.com/pac4j/pac4j/wiki/Authorizers) available in the `pac4j-core` and `pac4j-http` submodules: role / permission checks, CSRF token validation...
+It also supports many authorization checks, called [**authorizers**](https://github.com/pac4j/pac4j/wiki/Authorizers) available in the `pac4j-core` (and `pac4j-http`) submodules: role / permission checks, profile verification, CSRF token validation...
 
 
 ## How to use it?
