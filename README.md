@@ -37,7 +37,7 @@ Just follow these easy steps:
 
 ### Add the required dependencies (`spring-webmvc-pac4j` + `pac4j-*` libraries)
 
-You need to add a dependency on the `spring-webmvc-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **1.0.0**) as well as on the appropriate `pac4j` submodules (<em>groupId</em>: **org.pac4j**, *version*: **1.8.0**): the `pac4j-oauth` dependency for OAuth support, the `pac4j-cas` dependency for CAS support, the `pac4j-ldap` module for LDAP authentication, ...
+You need to add a dependency on the `spring-webmvc-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **1.0.1**) as well as on the appropriate `pac4j` submodules (<em>groupId</em>: **org.pac4j**, *version*: **1.8.1**): the `pac4j-oauth` dependency for OAuth support, the `pac4j-cas` dependency for CAS support, the `pac4j-ldap` module for LDAP authentication, ...
 
 All artifacts are available in the [Maven central repository](http://search.maven.org/#search%7Cga%7C1%7Cpac4j).
 
@@ -284,7 +284,7 @@ The demo webapp for Spring Web MVC: [spring-webmvc-pac4j-demo](https://github.co
 
 ## Release notes
 
-See the [release notes](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-webmvc-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-webmvc-pac4j/1.0.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/1.8.0/index.html).
+See the [release notes](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-webmvc-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-webmvc-pac4j/1.0.1) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/1.8.1/index.html).
 
 
 ## Need help?
@@ -296,7 +296,7 @@ If you have any question, please use the following mailing lists:
 
 ## Development
 
-The next version 1.0.1-SNAPSHOT is under development.
+The next version 1.0.2-SNAPSHOT is under development.
 
 Maven artifacts are built via Travis: [![Build Status](https://travis-ci.org/pac4j/spring-webmvc-pac4j.png?branch=master)](https://travis-ci.org/pac4j/spring-webmvc-pac4j) and available in the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j). This repository must be added in the Maven *pom.xml* file for example:
 
