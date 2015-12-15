@@ -296,7 +296,7 @@ If you have any question, please use the following mailing lists:
 
 ## Development
 
-The next version 1.0.2-SNAPSHOT is under development.
+The version 1.0.2-SNAPSHOT is under development.
 
 Maven artifacts are built via Travis: [![Build Status](https://travis-ci.org/pac4j/spring-webmvc-pac4j.png?branch=master)](https://travis-ci.org/pac4j/spring-webmvc-pac4j) and available in the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j). This repository must be added in the Maven *pom.xml* file for example:
 
