@@ -117,4 +117,12 @@ public class CallbackController {
     public void setDefaultUrl(String defaultUrl) {
         this.defaultUrl = defaultUrl;
     }
+
+    public Config getConfig() {
+        return config;
+    }
+
+    public void setConfig(Config config) {
+        this.config = config;
+    }
 }
