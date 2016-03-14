@@ -109,7 +109,8 @@ public class RequiresAuthenticationInterceptor extends HandlerInterceptorAdapter
                         credentials = currentClient.getCredentials(context);
                         logger.debug("credentials: {}", credentials);
                     } catch (final RequiresHttpAction e) {
-                        throw new TechnicalException("Unexpected HTTP action", e);
+                        logger.debug("extra HTTP action required: {}", e.getCode());
+                        return false;
                     }
                     profile = currentClient.getUserProfile(credentials, context);
                     logger.debug("profile: {}", profile);
