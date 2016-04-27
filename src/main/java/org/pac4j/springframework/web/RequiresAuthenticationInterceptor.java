@@ -17,7 +17,10 @@ package org.pac4j.springframework.web;
 
 import org.pac4j.core.authorization.checker.AuthorizationChecker;
 import org.pac4j.core.authorization.checker.DefaultAuthorizationChecker;
-import org.pac4j.core.client.*;
+import org.pac4j.core.client.Client;
+import org.pac4j.core.client.Clients;
+import org.pac4j.core.client.DirectClient;
+import org.pac4j.core.client.IndirectClient;
 import org.pac4j.core.client.finder.ClientFinder;
 import org.pac4j.core.client.finder.DefaultClientFinder;
 import org.pac4j.core.config.Config;
@@ -27,7 +30,6 @@ import org.pac4j.core.context.Pac4jConstants;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.exception.RequiresHttpAction;
-import org.pac4j.core.exception.TechnicalException;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.core.profile.UserProfile;
@@ -101,7 +103,7 @@ public class RequiresAuthenticationInterceptor extends HandlerInterceptorAdapter
         logger.debug("useSession: {}", useSession);
         final ProfileManager<CommonProfile> manager = new ProfileManager(context);
         final Optional<CommonProfile> optional = manager.get(useSession);
-        CommonProfile profile = optional.get();
+        CommonProfile profile = optional.isPresent() ? optional.get() : null;
         logger.debug("profile: {}", profile);
 
         // no profile and some current clients
