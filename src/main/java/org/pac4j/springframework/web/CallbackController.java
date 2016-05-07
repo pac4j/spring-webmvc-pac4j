@@ -24,8 +24,8 @@ import org.pac4j.core.context.Pac4jConstants;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.exception.RequiresHttpAction;
+import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
-import org.pac4j.core.profile.UserProfile;
 import org.pac4j.core.util.CommonHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,7 +78,12 @@ public class CallbackController {
         }
         logger.debug("credentials: {}", credentials);
 
-        final UserProfile profile = client.getUserProfile(credentials, context);
+        CommonProfile profile = null;
+        try {
+            profile = client.getUserProfile(credentials, context);
+        } catch (RequiresHttpAction requiresHttpAction) {
+            requiresHttpAction.printStackTrace();
+        }
         logger.debug("profile: {}", profile);
         saveUserProfile(context, profile);
         return redirectToOriginallyRequestedUrl(context);
@@ -90,10 +95,11 @@ public class CallbackController {
             this.defaultUrl = Pac4jConstants.DEFAULT_URL_VALUE;
         }
     }
-    protected void saveUserProfile(final WebContext context, final UserProfile profile) {
-        final ProfileManager manager = new ProfileManager(context);
+
+    protected void saveUserProfile(final WebContext context, final CommonProfile profile) {
+        final ProfileManager<CommonProfile> manager = new ProfileManager(context);
         if (profile != null) {
-            manager.save(true, profile);
+            manager.save(true, profile, false);
         }
     }
 

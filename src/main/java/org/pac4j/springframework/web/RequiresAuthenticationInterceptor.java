@@ -15,9 +15,14 @@
  */
 package org.pac4j.springframework.web;
 
-import org.pac4j.core.authorization.AuthorizationChecker;
-import org.pac4j.core.authorization.DefaultAuthorizationChecker;
-import org.pac4j.core.client.*;
+import org.pac4j.core.authorization.checker.AuthorizationChecker;
+import org.pac4j.core.authorization.checker.DefaultAuthorizationChecker;
+import org.pac4j.core.client.Client;
+import org.pac4j.core.client.Clients;
+import org.pac4j.core.client.DirectClient;
+import org.pac4j.core.client.IndirectClient;
+import org.pac4j.core.client.finder.ClientFinder;
+import org.pac4j.core.client.finder.DefaultClientFinder;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.HttpConstants;
 import org.pac4j.core.context.J2EContext;
@@ -25,7 +30,7 @@ import org.pac4j.core.context.Pac4jConstants;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.exception.RequiresHttpAction;
-import org.pac4j.core.exception.TechnicalException;
+import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.core.util.CommonHelper;
@@ -35,7 +40,9 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>This filter protects a resource (authentication + authorization).</p>
@@ -94,8 +101,9 @@ public class RequiresAuthenticationInterceptor extends HandlerInterceptorAdapter
 
         final boolean useSession = useSession(context, currentClients);
         logger.debug("useSession: {}", useSession);
-        final ProfileManager manager = new ProfileManager(context);
-        UserProfile profile = manager.get(useSession);
+        final ProfileManager<CommonProfile> manager = new ProfileManager(context);
+        final Optional<CommonProfile> optional = manager.get(useSession);
+        CommonProfile profile = optional.isPresent() ? optional.get() : null;
         logger.debug("profile: {}", profile);
 
         // no profile and some current clients
@@ -115,7 +123,7 @@ public class RequiresAuthenticationInterceptor extends HandlerInterceptorAdapter
                     profile = currentClient.getUserProfile(credentials, context);
                     logger.debug("profile: {}", profile);
                     if (profile != null) {
-                        manager.save(useSession, profile);
+                        manager.save(useSession, profile,false);
                         break;
                     }
                 }
@@ -124,7 +132,9 @@ public class RequiresAuthenticationInterceptor extends HandlerInterceptorAdapter
 
         if (profile != null) {
             logger.debug("authorizerName: {}", authorizerName);
-            if (authorizationChecker.isAuthorized(context, profile, authorizerName, config.getAuthorizers())) {
+            List<CommonProfile> profiles = new ArrayList<>();
+            profiles.add(profile);
+            if (authorizationChecker.isAuthorized(context, profiles, authorizerName, config.getAuthorizers())) {
                 logger.debug("grant access");
 
                 return true;
@@ -168,7 +178,7 @@ public class RequiresAuthenticationInterceptor extends HandlerInterceptorAdapter
     protected void redirectToIdentityProvider(final WebContext context, final List<Client> currentClients) {
         try {
             final IndirectClient currentClient = (IndirectClient) currentClients.get(0);
-            currentClient.redirect(context, true);
+            currentClient.redirect(context);
         } catch (final RequiresHttpAction e) {
             logger.debug("extra HTTP action required: {}", e.getCode());
         }
