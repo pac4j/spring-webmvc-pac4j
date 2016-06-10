@@ -1,46 +1,27 @@
-/*
-  Copyright 2015 - 2015 pac4j organization
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
- */
 package org.pac4j.springframework.web;
 
-import org.pac4j.core.client.Client;
-import org.pac4j.core.client.Clients;
-import org.pac4j.core.client.IndirectClient;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.J2EContext;
-import org.pac4j.core.context.Pac4jConstants;
-import org.pac4j.core.context.WebContext;
-import org.pac4j.core.credentials.Credentials;
-import org.pac4j.core.exception.RequiresHttpAction;
-import org.pac4j.core.profile.ProfileManager;
-import org.pac4j.core.profile.UserProfile;
-import org.pac4j.core.util.CommonHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.pac4j.core.engine.CallbackLogic;
+import org.pac4j.core.engine.J2ERenewSessionCallbackLogic;
+import org.pac4j.core.http.J2ENopHttpActionAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static org.pac4j.core.util.CommonHelper.assertNotNull;
+
 /**
- * <p>This controller handles the callback from the identity provider to finish the authentication process.</p>
- * <p>The default url after login (if none has originally be requested) can be defined via the <code>pac4j.callback.defaultUrl</code> properties key.</p>
+ * <p>This filter finishes the login process for an indirect client, based on the {@link #callbackLogic}.</p>
+ *
+ * <p>The configuration can be defined via property keys: <code>pac4j.callback.defaultUrl</code> (default url after login if none was requested),
+ * <code>pac4j.callback.multiProfile</code> (whether multiple profiles should be kept) and
+ * <code>pac4j.callback.renewSession</code> (whether the session must be renewed after login).</p>
+ * <p>Or it can be defined via setter methods: {@link #setDefaultUrl(String)}, {@link #setMultiProfile(Boolean)} and ({@link #setRenewSession(Boolean)}.</p>
  *
  * @author Jerome Leleu
  * @since 1.0.0
@@ -48,66 +29,29 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class CallbackController {
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    private CallbackLogic<Object, J2EContext> callbackLogic = new J2ERenewSessionCallbackLogic();
 
-    @Value("${pac4j.callback.defaultUrl:}")
-    protected String defaultUrl;
+    @Value("${pac4j.callback.defaultUrl:#{null}}")
+    private String defaultUrl;
+
+    @Value("${pac4j.callback.multiProfile:#{null}}")
+    private Boolean multiProfile;
+
+    @Value("${pac4j.callback.renewSession:#{null}}")
+    private Boolean renewSession;
 
     @Autowired
-    protected Config config;
+    private Config config;
 
     @RequestMapping("/callback")
     public String callback(final HttpServletRequest request, final HttpServletResponse response) {
 
-        final WebContext context = new J2EContext(request, response);
+        assertNotNull("config", config);
+        final J2EContext context = new J2EContext(request, response, config.getSessionStore());
 
-        CommonHelper.assertNotNull("config", config);
-        final Clients clients = config.getClients();
-        CommonHelper.assertNotNull("clients", clients);
-        final Client client = clients.findClient(context);
-        logger.debug("client: {}", client);
-        CommonHelper.assertNotNull("client", client);
-        CommonHelper.assertTrue(client instanceof IndirectClient, "only indirect clients are allowed on the callback url");
+        callbackLogic.perform(context, config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.multiProfile, this.renewSession);
 
-        final Credentials credentials;
-        try {
-            credentials = client.getCredentials(context);
-        } catch (final RequiresHttpAction e) {
-            logger.debug("extra HTTP action required: {}", e.getCode());
-            return null;
-        }
-        logger.debug("credentials: {}", credentials);
-
-        final UserProfile profile = client.getUserProfile(credentials, context);
-        logger.debug("profile: {}", profile);
-        saveUserProfile(context, profile);
-        return redirectToOriginallyRequestedUrl(context);
-    }
-
-    @PostConstruct
-    public void postContruct() {
-        if (CommonHelper.isBlank(defaultUrl)) {
-            this.defaultUrl = Pac4jConstants.DEFAULT_URL_VALUE;
-        }
-    }
-    protected void saveUserProfile(final WebContext context, final UserProfile profile) {
-        final ProfileManager manager = new ProfileManager(context);
-        if (profile != null) {
-            manager.save(true, profile);
-        }
-    }
-
-    protected String redirectToOriginallyRequestedUrl(final WebContext context) {
-        final String requestedUrl = (String) context.getSessionAttribute(Pac4jConstants.REQUESTED_URL);
-        logger.debug("requestedUrl: {}", requestedUrl);
-        final String redirectUrl;
-        if (CommonHelper.isNotBlank(requestedUrl)) {
-            context.setSessionAttribute(Pac4jConstants.REQUESTED_URL, null);
-            redirectUrl = requestedUrl;
-        } else {
-            redirectUrl = this.defaultUrl;
-        }
-        return "redirect:" + redirectUrl;
+        return null;
     }
 
     public String getDefaultUrl() {
@@ -116,6 +60,30 @@ public class CallbackController {
 
     public void setDefaultUrl(String defaultUrl) {
         this.defaultUrl = defaultUrl;
+    }
+
+    public CallbackLogic<Object, J2EContext> getCallbackLogic() {
+        return callbackLogic;
+    }
+
+    public void setCallbackLogic(CallbackLogic<Object, J2EContext> callbackLogic) {
+        this.callbackLogic = callbackLogic;
+    }
+
+    public Boolean getMultiProfile() {
+        return multiProfile;
+    }
+
+    public void setMultiProfile(Boolean multiProfile) {
+        this.multiProfile = multiProfile;
+    }
+
+    public Boolean getRenewSession() {
+        return renewSession;
+    }
+
+    public void setRenewSession(Boolean renewSession) {
+        this.renewSession = renewSession;
     }
 
     public Config getConfig() {
