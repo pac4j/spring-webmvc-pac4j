@@ -42,6 +42,7 @@ public class ApplicationLogoutController {
     @RequestMapping("/logout")
     public String applicationLogout(final HttpServletRequest request, final HttpServletResponse response) {
 
+        assertNotNull("applicationLogoutLogic", applicationLogoutLogic);
         assertNotNull("config", config);
         final J2EContext context = new J2EContext(request, response, config.getSessionStore());
 

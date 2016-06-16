@@ -46,6 +46,7 @@ public class CallbackController {
     @RequestMapping("/callback")
     public String callback(final HttpServletRequest request, final HttpServletResponse response) {
 
+        assertNotNull("callbackLogic", callbackLogic);
         assertNotNull("config", config);
         final J2EContext context = new J2EContext(request, response, config.getSessionStore());
 
