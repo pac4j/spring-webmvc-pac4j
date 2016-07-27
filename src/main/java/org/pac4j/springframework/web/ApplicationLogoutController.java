@@ -40,15 +40,13 @@ public class ApplicationLogoutController {
     private Config config;
 
     @RequestMapping("/logout")
-    public String applicationLogout(final HttpServletRequest request, final HttpServletResponse response) {
+    public void applicationLogout(final HttpServletRequest request, final HttpServletResponse response) {
 
         assertNotNull("applicationLogoutLogic", applicationLogoutLogic);
         assertNotNull("config", config);
         final J2EContext context = new J2EContext(request, response, config.getSessionStore());
 
         applicationLogoutLogic.perform(context, config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.logoutUrlPattern);
-
-        return null;
     }
 
     public String getDefaultUrl() {

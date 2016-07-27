@@ -44,15 +44,13 @@ public class CallbackController {
     private Config config;
 
     @RequestMapping("/callback")
-    public String callback(final HttpServletRequest request, final HttpServletResponse response) {
+    public void callback(final HttpServletRequest request, final HttpServletResponse response) {
 
         assertNotNull("callbackLogic", callbackLogic);
         assertNotNull("config", config);
         final J2EContext context = new J2EContext(request, response, config.getSessionStore());
 
         callbackLogic.perform(context, config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.multiProfile, this.renewSession);
-
-        return null;
     }
 
     public String getDefaultUrl() {
