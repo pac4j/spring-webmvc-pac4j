@@ -30,7 +30,7 @@ Just follow these easy steps to secure your Spring web application:
 You need to add a dependency on:
  
 - the `spring-webmvc-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **1.1.1**)
-- the appropriate `pac4j` [submodules](https://github.com/pac4j/pac4j/wiki/Clients) (<em>groupId</em>: **org.pac4j**, *version*: **1.9.1**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
+- the appropriate `pac4j` [submodules](http://www.pac4j.org/docs/clients.html) (<em>groupId</em>: **org.pac4j**, *version*: **1.9.1**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
 
 All released artifacts are available in the [Maven central repository](http://search.maven.org/#search%7Cga%7C1%7Cpac4j).
 
@@ -168,9 +168,9 @@ public class Pac4jConfig {
 
 Notice that you can define:
 
-1) a specific [`SessionStore`](https://github.com/pac4j/pac4j/wiki/SessionStore) using the `setSessionStore(sessionStore)` method (by default, the `J2ESessionStore` uses the HTTP session)
+1) a specific [`SessionStore`](http://www.pac4j.org/docs/session-store.html) using the `setSessionStore(sessionStore)` method (by default, the `J2ESessionStore` uses the HTTP session)
 
-2) specific [matchers](https://github.com/pac4j/pac4j/wiki/Matchers) via the `addMatcher(name, Matcher)` method.
+2) specific [matchers](http://www.pac4j.org/docs/matchers.html) via the `addMatcher(name, Matcher)` method.
 
 ---
 
