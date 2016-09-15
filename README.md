@@ -2,7 +2,7 @@
   <img src="https://pac4j.github.io/pac4j/img/logo-spring-webmvc.png" width="300" />
 </p>
 
-The `spring-webmvc-pac4j` project is an **easy and powerful security library for Spring Web MVC or Spring Boot** web applications which supports authentication and authorization, but also application logout and advanced features like session fixation and CSRF protection.
+The `spring-webmvc-pac4j` project is an **easy and powerful security library for Spring Web MVC** (with Spring Boot) web applications which supports authentication and authorization, but also application logout and advanced features like session fixation and CSRF protection.
 It's based on Java 8, Spring Web MVC 4 and on the **[pac4j security engine](https://github.com/pac4j/pac4j)**. It's available under the Apache 2 license.
 
 [**Main concepts and components:**](http://www.pac4j.org/docs/main-concepts-and-components.html)
