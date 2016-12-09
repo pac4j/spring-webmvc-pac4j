@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import static org.pac4j.core.util.CommonHelper.assertNotNull;
 
 /**
- * <p>This filter protects an url, based on the {@link #securityLogic}.</p>
+ * <p>This interceptor protects an url, based on the {@link #securityLogic}.</p>
  *
  * <p>The configuration can be provided via contructors or setter methods: {@link #setConfig(Config)} (the security configuration),
  * {@link #setClients(String)} (list of clients for authentication), {@link #setAuthorizers(String)} (list of authorizers),
@@ -69,7 +69,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         return securityLogic;
     }
 
-    public void setSecurityLogic(SecurityLogic<Boolean, J2EContext> securityLogic) {
+    public void setSecurityLogic(final SecurityLogic<Boolean, J2EContext> securityLogic) {
         this.securityLogic = securityLogic;
     }
 
@@ -77,7 +77,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         return clients;
     }
 
-    public void setClients(String clients) {
+    public void setClients(final String clients) {
         this.clients = clients;
     }
 
@@ -85,7 +85,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         return authorizers;
     }
 
-    public void setAuthorizers(String authorizers) {
+    public void setAuthorizers(final String authorizers) {
         this.authorizers = authorizers;
     }
 
@@ -93,7 +93,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         return matchers;
     }
 
-    public void setMatchers(String matchers) {
+    public void setMatchers(final String matchers) {
         this.matchers = matchers;
     }
 
@@ -101,7 +101,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         return multiProfile;
     }
 
-    public void setMultiProfile(Boolean multiProfile) {
+    public void setMultiProfile(final Boolean multiProfile) {
         this.multiProfile = multiProfile;
     }
 
@@ -109,7 +109,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         return config;
     }
 
-    public void setConfig(Config config) {
+    public void setConfig(final Config config) {
         this.config = config;
     }
 }

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import static org.pac4j.core.util.CommonHelper.assertNotNull;
 
 /**
- * <p>This filter finishes the login process for an indirect client, based on the {@link #callbackLogic}.</p>
+ * <p>This controller finishes the login process for an indirect client, based on the {@link #callbackLogic}.</p>
  *
  * <p>The configuration can be defined via property keys: <code>pac4j.callback.defaultUrl</code> (default url after login if none was requested),
  * <code>pac4j.callback.multiProfile</code> (whether multiple profiles should be kept) and
@@ -57,7 +57,7 @@ public class CallbackController {
         return defaultUrl;
     }
 
-    public void setDefaultUrl(String defaultUrl) {
+    public void setDefaultUrl(final String defaultUrl) {
         this.defaultUrl = defaultUrl;
     }
 
@@ -65,7 +65,7 @@ public class CallbackController {
         return callbackLogic;
     }
 
-    public void setCallbackLogic(CallbackLogic<Object, J2EContext> callbackLogic) {
+    public void setCallbackLogic(final CallbackLogic<Object, J2EContext> callbackLogic) {
         this.callbackLogic = callbackLogic;
     }
 
@@ -73,7 +73,7 @@ public class CallbackController {
         return multiProfile;
     }
 
-    public void setMultiProfile(Boolean multiProfile) {
+    public void setMultiProfile(final Boolean multiProfile) {
         this.multiProfile = multiProfile;
     }
 
@@ -81,7 +81,7 @@ public class CallbackController {
         return renewSession;
     }
 
-    public void setRenewSession(Boolean renewSession) {
+    public void setRenewSession(final Boolean renewSession) {
         this.renewSession = renewSession;
     }
 
@@ -89,7 +89,7 @@ public class CallbackController {
         return config;
     }
 
-    public void setConfig(Config config) {
+    public void setConfig(final Config config) {
         this.config = config;
     }
 }
