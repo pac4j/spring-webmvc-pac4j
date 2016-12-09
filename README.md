@@ -3,7 +3,7 @@
 </p>
 
 The `spring-webmvc-pac4j` project is an **easy and powerful security library for Spring Web MVC** (with or without Spring Boot) web applications. It supports authentication and authorization, but also application logout and advanced features like session fixation and CSRF protection.
-It's based on Java 8, Spring Web MVC 4 and on the **[pac4j security engine](https://github.com/pac4j/pac4j)**. It's available under the Apache 2 license.
+It's based on Java 8, Spring Web MVC 4 and on the **[pac4j security engine](https://github.com/pac4j/pac4j) v2.0**. It's available under the Apache 2 license.
 
 [**Main concepts and components:**](http://www.pac4j.org/docs/main-concepts-and-components.html)
 
@@ -29,8 +29,8 @@ Just follow these easy steps to secure your Spring web application:
 
 You need to add a dependency on:
  
-- the `spring-webmvc-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **1.1.4**)
-- the appropriate `pac4j` [submodules](http://www.pac4j.org/docs/clients.html) (<em>groupId</em>: **org.pac4j**, *version*: **1.9.4**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
+- the `spring-webmvc-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **2.0.0-SNAPSHOT**)
+- the appropriate `pac4j` [submodules](http://www.pac4j.org/docs/clients.html) (<em>groupId</em>: **org.pac4j**, *version*: **2.0.0-SNAPSHOT**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
 
 All released artifacts are available in the [Maven central repository](http://search.maven.org/#search%7Cga%7C1%7Cpac4j).
 
@@ -298,25 +298,36 @@ FacebookProfile facebookProfile = (FacebookProfile) commonProfile;
 
 ---
 
-### 6) Logout (`ApplicationLogoutController`)
+### 6) Logout (`LogoutController`)
 
-You can log out the current authenticated user using the `ApplicationLogoutController`. It has the following behaviour:
+The `LogoutController` can handle:
+ 
+- the local logout by removing the pac4j profiles from the session (it can be used for the front-channel logout from the identity provider in case of a central logout)
+- the central logout by calling the identity provider logout endpoint.
 
-1) after logout, the user is redirected to the url defined by the `url` request parameter if it matches the `logoutUrlPattern`
 
-2) or the user is redirected to the `defaultUrl` if it is defined
+It has the following behaviour:
 
-3) otherwise, a blank page is displayed.
+1) If the `localLogout` property is `true`, the pac4j profiles are removed from the web session (and the web session is destroyed if the `killSession` property is `true`)
+
+2) A post logout action is computed as the redirection to the `url` request parameter if it matches the `logoutUrlPattern` or to the `defaultUrl` if it is defined or as a blank page otherwise
+
+3) If the `centralLogout` property is `true`, the user is redirected to the identity provider for a central logout and
+then optionally to the post logout redirection URL (if it's supported by the identity provider and if it's an absolute URL).
+If no central logout is defined, the post logout action is performed directly.
 
 
 The following properties are available:
 
-1) `pac4j.applicationLogout.defaultUrl` (optional): the default logout url if no `url` request parameter is provided or if the `url` does not match the `logoutUrlPattern` (not defined by default)
+1) `pac4j.logout.defaultUrl` (optional): the default logout url if no `url` request parameter is provided or if the `url` does not match the `logoutUrlPattern` (not defined by default)
 
-2) `pac4j.applicationLogout.logoutUrlPattern` (optional): the logout url pattern that the `url` parameter must match (only relative urls are allowed by default).
+2) `pac4j.logout.logoutUrlPattern` (optional): the logout url pattern that the `url` parameter must match (only relative urls are allowed by default)
 
+3) `pac4j.logout.localLogout` (optional): whether a local logout must be performed (`true` by default)
 
-The `ApplicationLogoutController` must be defined by class scanning to be available on the `/logout` url:
+4) `pac4j.logout.centralLogout` (optional): whether a central logout must be performed (`false` by default).
+
+The `LogoutController` must be defined by classpath scanning to be available on the `/logout` url:
 
 #### Spring context file:
 
@@ -334,6 +345,10 @@ The `ApplicationLogoutController` must be defined by class scanning to be availa
 
 ## Migration guide
 
+### 1.1 -> 2.0
+
+The `ApplicationLogoutController` has been renamed as `LogoutController` and now handles both the application and identity provider logouts.
+
 ### 1.0 -> 1.1
 
 The `RequiresAuthenticationInterceptor` is now named `SecurityInterceptor`.
@@ -348,7 +363,7 @@ The demo webapps for Spring Web MVC without Spring Boot: [spring-webmvc-pac4j-de
 
 ## Release notes
 
-See the [release notes](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-webmvc-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-webmvc-pac4j/1.1.4) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/1.9.4/index.html).
+See the [release notes](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-webmvc-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-webmvc-pac4j/2.0.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/2.0.0/index.html).
 
 
 ## Need help?
@@ -361,7 +376,7 @@ If you have any question, please use the following mailing lists:
 
 ## Development
 
-The version 1.1.5-SNAPSHOT is under development.
+The version 2.0.0-SNAPSHOT is under development.
 
 Maven artifacts are built via Travis: [![Build Status](https://travis-ci.org/pac4j/spring-webmvc-pac4j.png?branch=master)](https://travis-ci.org/pac4j/spring-webmvc-pac4j) and available in the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j). This repository must be added in the Maven `pom.xml` file for example:
 
