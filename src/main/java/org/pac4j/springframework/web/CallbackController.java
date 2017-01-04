@@ -3,7 +3,7 @@ package org.pac4j.springframework.web;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.engine.CallbackLogic;
-import org.pac4j.core.engine.J2ERenewSessionCallbackLogic;
+import org.pac4j.core.engine.DefaultCallbackLogic;
 import org.pac4j.core.http.J2ENopHttpActionAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +29,7 @@ import static org.pac4j.core.util.CommonHelper.assertNotNull;
 @Controller
 public class CallbackController {
 
-    private CallbackLogic<Object, J2EContext> callbackLogic = new J2ERenewSessionCallbackLogic();
+    private CallbackLogic<Object, J2EContext> callbackLogic = new DefaultCallbackLogic<>();
 
     @Value("${pac4j.callback.defaultUrl:#{null}}")
     private String defaultUrl;
