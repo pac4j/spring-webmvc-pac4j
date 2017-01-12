@@ -20,10 +20,10 @@ import static org.pac4j.core.util.CommonHelper.assertNotNull;
  *
  * <p>The configuration can be provided via property keys: <code>pac4j.logout.defaultUrl</code> (default logourl url),
  * <code>pac4j.logout.logoutUrlPattern</code> (pattern that logout urls must match), <code>pac4j.logout.localLogout</code> (whether the application logout must be performed)
- * and <code>pac4j.logout.centralLogout</code> (whether the centralLogout must be performed).</p>
+ * <code>pac4j.logout.destroySession</code> (whether we must destroy the web session during the local logout), <code>pac4j.logout.centralLogout</code> (whether the centralLogout must be performed).</p>
  *
- * <p>Or it can be defined via setter methods: {@link #setDefaultUrl(String)}, {@link #setLogoutUrlPattern(String)}, {@link #setLocalLogout(Boolean)} and
- * {@link #setCentralLogout(Boolean)}.</p>
+ * <p>Or it can be defined via setter methods: {@link #setDefaultUrl(String)}, {@link #setLogoutUrlPattern(String)}, {@link #setLocalLogout(Boolean)},
+ * {@link #setDestroySession(Boolean)} and {@link #setCentralLogout(Boolean)}.</p>
  *
  * @author Jerome Leleu
  * @since 1.0.0
@@ -42,6 +42,9 @@ public class LogoutController {
     @Value("${pac4j.logout.localLogout:#{null}}")
     private Boolean localLogout;
 
+    @Value("${pac4j.logout.destroySession:#{null}}")
+    private Boolean destroySession;
+
     @Value("${pac4j.logout.centralLogout:#{null}}")
     private Boolean centralLogout;
 
@@ -55,7 +58,7 @@ public class LogoutController {
         assertNotNull("config", config);
         final J2EContext context = new J2EContext(request, response, config.getSessionStore());
 
-        logoutLogic.perform(context, config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.logoutUrlPattern, this.localLogout, this.centralLogout);
+        logoutLogic.perform(context, config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.logoutUrlPattern, this.localLogout, this.destroySession, this.centralLogout);
     }
 
     public String getDefaultUrl() {
@@ -104,5 +107,13 @@ public class LogoutController {
 
     public void setCentralLogout(final Boolean centralLogout) {
         this.centralLogout = centralLogout;
+    }
+
+    public Boolean getDestroySession() {
+        return destroySession;
+    }
+
+    public void setDestroySession(final Boolean destroySession) {
+        this.destroySession = destroySession;
     }
 }

@@ -166,11 +166,7 @@ public class Pac4jConfig {
 
 `http://localhost:8080/callback` is the url of the callback endpoint, which is only necessary for indirect clients.
 
-Notice that you can define:
-
-1) a specific [`SessionStore`](http://www.pac4j.org/docs/session-store.html) using the `setSessionStore(sessionStore)` method (by default, the `J2ESessionStore` uses the HTTP session)
-
-2) specific [matchers](http://www.pac4j.org/docs/matchers.html) via the `addMatcher(name, Matcher)` method.
+Notice that you can define specific [matchers](http://www.pac4j.org/docs/matchers.html) via the `addMatcher(name, Matcher)` method.
 
 ---
 
@@ -308,7 +304,7 @@ The `LogoutController` can handle:
 
 It has the following behaviour:
 
-1) If the `localLogout` property is `true`, the pac4j profiles are removed from the web session (and the web session is destroyed if the `killSession` property is `true`)
+1) If the `localLogout` property is `true`, the pac4j profiles are removed from the web session (and the web session is destroyed if the `destroySession` property is `true`)
 
 2) A post logout action is computed as the redirection to the `url` request parameter if it matches the `logoutUrlPattern` or to the `defaultUrl` if it is defined or as a blank page otherwise
 
@@ -325,7 +321,9 @@ The following properties are available:
 
 3) `pac4j.logout.localLogout` (optional): whether a local logout must be performed (`true` by default)
 
-4) `pac4j.logout.centralLogout` (optional): whether a central logout must be performed (`false` by default).
+4) `pac4j.logout.destroySession` (optional):  whether we must destroy the web session during the local logout (`false` by default) (`false` by default) (`false` by default)
+
+5) `pac4j.logout.centralLogout` (optional): whether a central logout must be performed (`false` by default).
 
 The `LogoutController` must be defined by classpath scanning to be available on the `/logout` url:
 
