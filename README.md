@@ -321,7 +321,7 @@ The following properties are available:
 
 3) `pac4j.logout.localLogout` (optional): whether a local logout must be performed (`true` by default)
 
-4) `pac4j.logout.destroySession` (optional):  whether we must destroy the web session during the local logout (`false` by default) (`false` by default) (`false` by default)
+4) `pac4j.logout.destroySession` (optional):  whether we must destroy the web session during the local logout (`false` by default)
 
 5) `pac4j.logout.centralLogout` (optional): whether a central logout must be performed (`false` by default).
 
