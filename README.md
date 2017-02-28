@@ -19,7 +19,7 @@ It's based on Java 8, Spring Web MVC 4 and on the **[pac4j security engine](http
 
 4) The `CallbackController` finishes the login process for an indirect client
 
-5) The `ApplicationLogoutController` logs out the user from the application.
+5) The `LogoutController` logs out the user from the application.
 
 ==
 
@@ -29,8 +29,8 @@ Just follow these easy steps to secure your Spring web application:
 
 You need to add a dependency on:
  
-- the `spring-webmvc-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **2.0.0-RC1**)
-- the appropriate `pac4j` [submodules](http://www.pac4j.org/docs/clients.html) (<em>groupId</em>: **org.pac4j**, *version*: **2.0.0-RC1**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
+- the `spring-webmvc-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **2.0.0-RC2-SNAPSHOT**)
+- the appropriate `pac4j` [submodules](http://www.pac4j.org/docs/clients.html) (<em>groupId</em>: **org.pac4j**, *version*: **2.0.0-RC2-SNAPSHOT**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
 
 All released artifacts are available in the [Maven central repository](http://search.maven.org/#search%7Cga%7C1%7Cpac4j).
 
@@ -45,51 +45,98 @@ It can be built via a Spring context file or a Spring configuration class:
 #### Spring context file:
 
 ```xml
-    <bean id="oidClient" class="org.pac4j.oidc.client.GoogleOidcClient">
-        <property name="clientID" value="googleId" />
-        <property name="secret" value="googleSecret" />
+    <bean id="oidcConfiguration" class="org.pac4j.oidc.config.OidcConfiguration">
+        <property name="clientId" value="167480702619-8e1lo80dnu8bpk3k0lvvj27noin97vu9.apps.googleusercontent.com" />
+        <property name="secret" value="MhMme_Ik6IH2JMnAT6MFIfee" />
+        <property name="useNonce" value="true" />
+        <property name="customParams">
+            <map>
+                <entry key="prompt" value="consent" />
+            </map>
+        </property>
     </bean>
+
+    <bean id="oidClient" class="org.pac4j.oidc.client.GoogleOidcClient">
+        <constructor-arg name="configuration" ref="oidcConfiguration" />
+        <property name="authorizationGenerator">
+            <bean class="org.pac4j.demo.spring.RoleAdminAuthGenerator" />
+        </property>
+    </bean>
+
     <bean id="samlConfig" class="org.pac4j.saml.client.SAML2ClientConfiguration">
-        <constructor-arg name="keystorePath" value="resource:samlKeystore.jks" />
-        <constructor-arg name="keystorePassword" value="pac4j-demo-passwd" />
-        <constructor-arg name="privateKeyPassword" value="pac4j-demo-passwd" />
-        <constructor-arg name="identityProviderMetadataPath" value="resource:metadata-okta.xml" />
+        <property name="keystoreResourceClasspath" value="samlKeystore.jks" />
+        <property name="keystorePassword" value="pac4j-demo-passwd" />
+        <property name="privateKeyPassword" value="pac4j-demo-passwd" />
+        <property name="identityProviderMetadataResourceClasspath" value="metadata-okta.xml" />
         <property name="maximumAuthenticationLifetime" value="3600" />
         <property name="serviceProviderEntityId" value="http://localhost:8080/callback?client_name=SAML2Client" />
-        <property name="serviceProviderMetadataPath" value="sp-metadata.xml" />
+        <property name="serviceProviderMetadataResourceFilepath" value="sp-metadata.xml" />
     </bean>
+
     <bean id="saml2Client" class="org.pac4j.saml.client.SAML2Client">
         <constructor-arg name="configuration" ref="samlConfig" />
     </bean>
+
     <bean id="facebookClient" class="org.pac4j.oauth.client.FacebookClient">
-        <constructor-arg name="key" value="fbId" />
-        <constructor-arg name="secret" value="fbSecret" />
+        <constructor-arg name="key" value="145278422258960" />
+        <constructor-arg name="secret" value="be21409ba8f39b5dae2a7de525484da8" />
     </bean>
+
     <bean id="twitterClient" class="org.pac4j.oauth.client.TwitterClient">
-        <constructor-arg name="key" value="twId" />
-        <constructor-arg name="secret" value="twSecret" />
+        <constructor-arg name="key" value="CoxUiYwQOSFDReZYdjigBA" />
+        <constructor-arg name="secret" value="2kAzunH5Btc4gRSaMr7D7MkyoJ5u1VzbOOzE8rBofs" />
     </bean>
+
     <bean id="testAuthenticator" class="org.pac4j.http.credentials.authenticator.test.SimpleTestUsernamePasswordAuthenticator">
     </bean>
+
     <bean id="formClient" class="org.pac4j.http.client.indirect.FormClient">
         <constructor-arg name="loginUrl" value="http://localhost:8080/loginForm" />
         <constructor-arg name="usernamePasswordAuthenticator" ref="testAuthenticator" />
     </bean>
-    <bean id="casClient" class="org.pac4j.cas.client.CasClient">
-        <property name="casLoginUrl" value="https://casserverpac4j.herokuapp.com/login" />
+
+    <bean id="indirectBasicAuthClient" class="org.pac4j.http.client.indirect.IndirectBasicAuthClient">
+        <constructor-arg name="usernamePasswordAuthenticator" ref="testAuthenticator" />
     </bean>
+
+    <bean id="casConfiguration" class="org.pac4j.cas.config.CasConfiguration">
+        <property name="loginUrl" value="https://casserverpac4j.herokuapp.com/login" />
+    </bean>
+
+    <bean id="casRestBasicAuthClient" class="org.pac4j.cas.client.rest.CasRestBasicAuthClient">
+        <constructor-arg name="headerName" value="Authorization" />
+        <constructor-arg name="prefixHeader" value="Basic " />
+        <constructor-arg name="configuration" ref="casConfiguration" />
+    </bean>
+
+    <bean id="casClient" class="org.pac4j.cas.client.CasClient">
+        <constructor-arg name="configuration" ref="casConfiguration" />
+    </bean>
+
+    <bean id="secretSignatureConfiguration" class="org.pac4j.jwt.config.signature.SecretSignatureConfiguration">
+        <constructor-arg name="secret" value="${salt}" />
+    </bean>
+
+    <bean id="secretEncryptionConfiguration" class="org.pac4j.jwt.config.encryption.SecretEncryptionConfiguration">
+        <constructor-arg name="secret" value="${salt}" />
+    </bean>
+
     <bean id="parameterClient" class="org.pac4j.http.client.direct.ParameterClient">
         <constructor-arg name="parameterName" value="token" />
         <constructor-arg name="tokenAuthenticator">
             <bean class="org.pac4j.jwt.credentials.authenticator.JwtAuthenticator">
-                <constructor-arg name="signingSecret" value="12345678901234567890123456789012" />
-                <constructor-arg name="encryptionSecret" value="12345678901234567890123456789012" />
+                <property name="signatureConfiguration" ref="secretSignatureConfiguration" />
+                <property name="encryptionConfiguration" ref="secretEncryptionConfiguration" />
             </bean>
         </constructor-arg>
+        <property name="supportGetRequest" value="true" />
+        <property name="supportPostRequest" value="false" />
     </bean>
+
     <bean id="directBasicAuthClient" class="org.pac4j.http.client.direct.DirectBasicAuthClient">
         <constructor-arg name="usernamePasswordAuthenticator" ref="testAuthenticator" />
     </bean>
+
     <bean id="clients" class="org.pac4j.core.client.Clients">
         <constructor-arg name="callbackUrl" value="http://localhost:8080/callback" />
         <constructor-arg name="clients">
@@ -99,17 +146,22 @@ It can be built via a Spring context file or a Spring configuration class:
                 <ref bean="facebookClient" />
                 <ref bean="twitterClient" />
                 <ref bean="formClient" />
+                <ref bean="indirectBasicAuthClient" />
                 <ref bean="casClient" />
                 <ref bean="parameterClient" />
                 <ref bean="directBasicAuthClient" />
+                <ref bean="casRestBasicAuthClient" />
             </list>
         </constructor-arg>
     </bean>
+
     <bean id="adminRoleAuthorizer" class="org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer">
         <constructor-arg name="roles" value="ROLE_ADMIN" />
     </bean>
+
     <bean id="customAuthorizer" class="org.pac4j.demo.spring.CustomAuthorizer">
     </bean>
+
     <bean id="config" class="org.pac4j.core.config.Config">
         <constructor-arg name="clients" ref="clients" />
         <constructor-arg name="authorizers">
@@ -123,7 +175,7 @@ It can be built via a Spring context file or a Spring configuration class:
 
 #### Spring configuration class:
 
-``` java
+```java
 @Configuration
 public class Pac4jConfig {
 
@@ -132,29 +184,41 @@ public class Pac4jConfig {
 
     @Bean
     public Config config() {
-        final GoogleOidcClient oidcClient = new GoogleOidcClient();
-        oidcClient.setClientID("googldId");
-        oidcClient.setSecret("googleSecret");
+        final OidcConfiguration oidcConfiguration = new OidcConfiguration();
+        oidcConfiguration.setClientId("167480702619-8e1lo80dnu8bpk3k0lvvj27noin97vu9.apps.googleusercontent.com");
+        oidcConfiguration.setSecret("MhMme_Ik6IH2JMnAT6MFIfee");
+        oidcConfiguration.setPreferredJwsAlgorithm(JWSAlgorithm.PS384);
+        oidcConfiguration.addCustomParam("prompt", "consent");
+        final GoogleOidcClient oidcClient = new GoogleOidcClient(oidcConfiguration);
+        oidcClient.setAuthorizationGenerator((ctx, profile) -> { profile.addRole("ROLE_ADMIN"); return profile; });
 
-        final SAML2ClientConfiguration cfg = new SAML2ClientConfiguration("resource:samlKeystore.jks", "pac4j-demo-passwd", "pac4j-demo-passwd", "resource:metadata-okta.xml");
+        final SAML2ClientConfiguration cfg = new SAML2ClientConfiguration(new ClassPathResource("samlKeystore.jks"), "pac4j-demo-passwd", "pac4j-demo-passwd", new ClassPathResource("metadata-okta.xml"));
         cfg.setMaximumAuthenticationLifetime(3600);
         cfg.setServiceProviderEntityId("http://localhost:8080/callback?client_name=SAML2Client");
-        cfg.setServiceProviderMetadataPath("sp-metadata.xml");
+        cfg.setServiceProviderMetadataResource(new FileSystemResource(new File("sp-metadata.xml").getAbsoluteFile()));
         final SAML2Client saml2Client = new SAML2Client(cfg);
 
-        final FacebookClient facebookClient = new FacebookClient("fbId", "fbSecret");
-        final TwitterClient twitterClient = new TwitterClient("twId", "twSecret");
-
+        final FacebookClient facebookClient = new FacebookClient("145278422258960", "be21409ba8f39b5dae2a7de525484da8");
+        final TwitterClient twitterClient = new TwitterClient("CoxUiYwQOSFDReZYdjigBA", "2kAzunH5Btc4gRSaMr7D7MkyoJ5u1VzbOOzE8rBofs");
         final FormClient formClient = new FormClient("http://localhost:8080/loginForm.jsp", new SimpleTestUsernamePasswordAuthenticator());
+        final IndirectBasicAuthClient indirectBasicAuthClient = new IndirectBasicAuthClient(new SimpleTestUsernamePasswordAuthenticator());
 
-        final CasClient casClient = new CasClient("https://casserverpac4j.herokuapp.com/login");
+        final CasConfiguration configuration = new CasConfiguration("https://casserverpac4j.herokuapp.com/login");
+        final CasClient casClient = new CasClient(configuration);
 
-        ParameterClient parameterClient = new ParameterClient("token", new JwtAuthenticator(salt));
+        final SecretSignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
+        final SecretEncryptionConfiguration secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);
+        final JwtAuthenticator authenticator = new JwtAuthenticator();
+        authenticator.setSignatureConfiguration(secretSignatureConfiguration);
+        authenticator.setEncryptionConfiguration(secretEncryptionConfiguration);
+        ParameterClient parameterClient = new ParameterClient("token", authenticator);
+        parameterClient.setSupportGetRequest(true);
+        parameterClient.setSupportPostRequest(false);
 
         final DirectBasicAuthClient directBasicAuthClient = new DirectBasicAuthClient(new SimpleTestUsernamePasswordAuthenticator());
 
         final Clients clients = new Clients("http://localhost:8080/callback", oidcClient, saml2Client, facebookClient,
-                twitterClient, formClient, casClient, parameterClient, directBasicAuthClient);
+                twitterClient, formClient, indirectBasicAuthClient, casClient, parameterClient, directBasicAuthClient);
 
         final Config config = new Config(clients);
         config.addAuthorizer("admin", new RequireAnyRoleAuthorizer("ROLE_ADMIN"));
