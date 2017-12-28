@@ -12,7 +12,7 @@
     <artifactId>spring-webmvc-pac4j</artifactId>
     <packaging>jar</packaging>
     <name>pac4j implementation for Spring Web MVC</name>
-    <version>2.1.1-SNAPSHOT</version>
+    <version>2.2.0-SNAPSHOT</version>
     <description>Security library for Spring Web MVC based on pac4j</description>
     <url>https://github.com/pac4j/spring-webmvc-pac4j</url>
 
@@ -54,9 +54,10 @@
 
     <properties>
         <javax.servlet>3.1.0</javax.servlet>
-        <pac4j.version>2.1.0</pac4j.version>
-        <spring.version>4.3.12.RELEASE</spring.version>
+        <pac4j.version>2.2.1</pac4j.version>
+        <spring.version>5.0.2.RELEASE</spring.version>
         <java.version>1.8</java.version>
+        <jackson.version>2.9.2</jackson.version>
     </properties>
 
     <dependencies>
@@ -81,6 +82,12 @@
             <artifactId>pac4j-core</artifactId>
             <version>${pac4j.version}</version>
         </dependency>
+        <!-- forces this version of Jackson for Spring -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -88,7 +95,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>3.7.0</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -98,7 +105,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.0.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -111,7 +118,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.3</version>
+                <version>3.0.0</version>
                 <configuration>
                     <charset>UTF-8</charset>
                     <encoding>UTF-8</encoding>
@@ -129,7 +136,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
-                <version>3.0.3</version>
+                <version>3.0.5</version>
                 <configuration>
                     <effort>Low</effort>
                     <threshold>Max</threshold>
@@ -149,7 +156,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.6</version>
+                <version>3.8</version>
                 <configuration>
                     <includeTests>true</includeTests>
                     <printFailingErrors>true</printFailingErrors>

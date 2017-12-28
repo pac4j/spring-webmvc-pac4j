@@ -3,7 +3,7 @@
 </p>
 
 The `spring-webmvc-pac4j` project is an **easy and powerful security library for Spring Web MVC** (with or without Spring Boot) web applications. It supports authentication and authorization, but also logout and advanced features like session fixation and CSRF protection.
-It's based on Java 8, Spring Web MVC 4 and on the **[pac4j security engine](https://github.com/pac4j/pac4j) v2**. It's available under the Apache 2 license.
+It's based on Java 8, Spring Web MVC 5 and on the **[pac4j security engine](https://github.com/pac4j/pac4j) v2**. It's available under the Apache 2 license.
 
 [**Main concepts and components:**](http://www.pac4j.org/docs/main-concepts-and-components.html)
 
@@ -28,8 +28,8 @@ Just follow these easy steps to secure your Spring web application:
 
 You need to add a dependency on:
  
-- the `spring-webmvc-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **2.1.0**)
-- the appropriate `pac4j` [submodules](http://www.pac4j.org/docs/clients.html) (<em>groupId</em>: **org.pac4j**, *version*: **2.1.0**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
+- the `spring-webmvc-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **2.2.0**)
+- the appropriate `pac4j` [submodules](http://www.pac4j.org/docs/clients.html) (<em>groupId</em>: **org.pac4j**, *version*: **2.2.1**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
 
 All released artifacts are available in the [Maven central repository](http://search.maven.org/#search%7Cga%7C1%7Cpac4j).
 
@@ -44,25 +44,7 @@ It can be built via a Spring context file or a Spring configuration class:
 #### Spring context file:
 
 ```xml
-    <bean id="oidcConfiguration" class="org.pac4j.oidc.config.OidcConfiguration">
-        <property name="clientId" value="167480702619-8e1lo80dnu8bpk3k0lvvj27noin97vu9.apps.googleusercontent.com" />
-        <property name="secret" value="MhMme_Ik6IH2JMnAT6MFIfee" />
-        <property name="useNonce" value="true" />
-        <property name="customParams">
-            <map>
-                <entry key="prompt" value="consent" />
-            </map>
-        </property>
-    </bean>
-
-    <bean id="oidClient" class="org.pac4j.oidc.client.GoogleOidcClient">
-        <constructor-arg name="configuration" ref="oidcConfiguration" />
-        <property name="authorizationGenerator">
-            <bean class="org.pac4j.demo.spring.RoleAdminAuthGenerator" />
-        </property>
-    </bean>
-
-    <bean id="samlConfig" class="org.pac4j.saml.client.SAML2ClientConfiguration">
+   <bean id="samlConfig" class="org.pac4j.saml.client.SAML2ClientConfiguration">
         <property name="keystoreResourceClasspath" value="samlKeystore.jks" />
         <property name="keystorePassword" value="pac4j-demo-passwd" />
         <property name="privateKeyPassword" value="pac4j-demo-passwd" />
@@ -94,47 +76,7 @@ It can be built via a Spring context file or a Spring configuration class:
         <constructor-arg name="usernamePasswordAuthenticator" ref="testAuthenticator" />
     </bean>
 
-    <bean id="indirectBasicAuthClient" class="org.pac4j.http.client.indirect.IndirectBasicAuthClient">
-        <constructor-arg name="usernamePasswordAuthenticator" ref="testAuthenticator" />
-    </bean>
-
-    <bean id="casConfiguration" class="org.pac4j.cas.config.CasConfiguration">
-        <property name="loginUrl" value="https://casserverpac4j.herokuapp.com/login" />
-    </bean>
-
-    <bean id="casRestBasicAuthClient" class="org.pac4j.cas.client.rest.CasRestBasicAuthClient">
-        <constructor-arg name="headerName" value="Authorization" />
-        <constructor-arg name="prefixHeader" value="Basic " />
-        <constructor-arg name="configuration" ref="casConfiguration" />
-    </bean>
-
-    <bean id="casClient" class="org.pac4j.cas.client.CasClient">
-        <constructor-arg name="configuration" ref="casConfiguration" />
-    </bean>
-
-    <bean id="secretSignatureConfiguration" class="org.pac4j.jwt.config.signature.SecretSignatureConfiguration">
-        <constructor-arg name="secret" value="${salt}" />
-    </bean>
-
-    <bean id="secretEncryptionConfiguration" class="org.pac4j.jwt.config.encryption.SecretEncryptionConfiguration">
-        <constructor-arg name="secret" value="${salt}" />
-    </bean>
-
-    <bean id="parameterClient" class="org.pac4j.http.client.direct.ParameterClient">
-        <constructor-arg name="parameterName" value="token" />
-        <constructor-arg name="tokenAuthenticator">
-            <bean class="org.pac4j.jwt.credentials.authenticator.JwtAuthenticator">
-                <property name="signatureConfiguration" ref="secretSignatureConfiguration" />
-                <property name="encryptionConfiguration" ref="secretEncryptionConfiguration" />
-            </bean>
-        </constructor-arg>
-        <property name="supportGetRequest" value="true" />
-        <property name="supportPostRequest" value="false" />
-    </bean>
-
-    <bean id="directBasicAuthClient" class="org.pac4j.http.client.direct.DirectBasicAuthClient">
-        <constructor-arg name="usernamePasswordAuthenticator" ref="testAuthenticator" />
-    </bean>
+    ...
 
     <bean id="clients" class="org.pac4j.core.client.Clients">
         <constructor-arg name="callbackUrl" value="http://localhost:8080/callback" />
@@ -172,6 +114,8 @@ It can be built via a Spring context file or a Spring configuration class:
     </bean>
 ```
 
+See a [full example here](https://github.com/pac4j/spring-webmvc-pac4j-demo/blob/master/src/main/webapp/WEB-INF/demo-servlet.xml#L37).
+
 #### Spring configuration class:
 
 ```java
@@ -197,10 +141,7 @@ public class Pac4jConfig {
         cfg.setServiceProviderMetadataResource(new FileSystemResource(new File("sp-metadata.xml").getAbsoluteFile()));
         final SAML2Client saml2Client = new SAML2Client(cfg);
 
-        final FacebookClient facebookClient = new FacebookClient("145278422258960", "be21409ba8f39b5dae2a7de525484da8");
-        final TwitterClient twitterClient = new TwitterClient("CoxUiYwQOSFDReZYdjigBA", "2kAzunH5Btc4gRSaMr7D7MkyoJ5u1VzbOOzE8rBofs");
-        final FormClient formClient = new FormClient("http://localhost:8080/loginForm.jsp", new SimpleTestUsernamePasswordAuthenticator());
-        final IndirectBasicAuthClient indirectBasicAuthClient = new IndirectBasicAuthClient(new SimpleTestUsernamePasswordAuthenticator());
+        ...
 
         final CasConfiguration configuration = new CasConfiguration("https://casserverpac4j.herokuapp.com/login");
         final CasClient casClient = new CasClient(configuration);
@@ -226,6 +167,9 @@ public class Pac4jConfig {
     }
 }
 ```
+
+See a [full example here](https://github.com/pac4j/spring-webmvc-pac4j-boot-demo/blob/master/src/main/java/org/pac4j/demo/spring/Pac4jConfig.java).
+
 
 `http://localhost:8080/callback` is the url of the callback endpoint, which is only necessary for indirect clients.
 
@@ -424,7 +368,7 @@ The demo webapps for Spring Web MVC without Spring Boot: [spring-webmvc-pac4j-de
 
 ## Release notes
 
-See the [release notes](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-webmvc-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-webmvc-pac4j/2.1.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/2.1.0/index.html).
+See the [release notes](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-webmvc-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-webmvc-pac4j/2.2.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/2.2.1/index.html).
 
 
 ## Need help?
@@ -437,7 +381,7 @@ If you have any question, please use the following mailing lists:
 
 ## Development
 
-The version 2.1.1-SNAPSHOT is under development.
+The version 2.2.0-SNAPSHOT is under development.
 
 Maven artifacts are built via Travis: [![Build Status](https://travis-ci.org/pac4j/spring-webmvc-pac4j.png?branch=master)](https://travis-ci.org/pac4j/spring-webmvc-pac4j) and available in the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j). This repository must be added in the Maven `pom.xml` file for example:
 
