@@ -43,6 +43,9 @@ public class CallbackController {
     @Value("${pac4j.callback.renewSession:#{null}}")
     private Boolean renewSession;
 
+    @Value("${pac4j.callback.defaultClient:#{null}}")
+    private String defaultClient;
+
     @Autowired
     private Config config;
 
@@ -55,7 +58,7 @@ public class CallbackController {
 
         callbackLogic.perform(context, config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl,
             this.saveInSession, this.multiProfile, this.renewSession,
-            config.getClients().getClients().get(0).getName());
+            this.defaultClient);
     }
 
     public String getDefaultUrl() {
@@ -88,6 +91,14 @@ public class CallbackController {
 
     public void setRenewSession(final Boolean renewSession) {
         this.renewSession = renewSession;
+    }
+
+    public String getDefaultClient() {
+        return defaultClient;
+    }
+
+    public void setDefaultClient(final String client) {
+        this.defaultClient = client;
     }
 
     public Config getConfig() {
