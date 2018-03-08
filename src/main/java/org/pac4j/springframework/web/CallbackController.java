@@ -4,7 +4,7 @@ import org.pac4j.core.config.Config;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.engine.CallbackLogic;
 import org.pac4j.core.engine.DefaultCallbackLogic;
-import org.pac4j.core.http.J2ENopHttpActionAdapter;
+import org.pac4j.core.http.adapter.J2ENopHttpActionAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -37,8 +37,14 @@ public class CallbackController {
     @Value("${pac4j.callback.multiProfile:#{null}}")
     private Boolean multiProfile;
 
+    @Value("${pac4j.callback.saveInSession:#{null}}")
+    private Boolean saveInSession;
+
     @Value("${pac4j.callback.renewSession:#{null}}")
     private Boolean renewSession;
+
+    @Value("${pac4j.callback.defaultClient:#{null}}")
+    private String defaultClient;
 
     @Autowired
     private Config config;
@@ -50,7 +56,9 @@ public class CallbackController {
         assertNotNull("config", config);
         final J2EContext context = new J2EContext(request, response, config.getSessionStore());
 
-        callbackLogic.perform(context, config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.multiProfile, this.renewSession);
+        callbackLogic.perform(context, config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl,
+            this.saveInSession, this.multiProfile, this.renewSession,
+            this.defaultClient);
     }
 
     public String getDefaultUrl() {
@@ -83,6 +91,14 @@ public class CallbackController {
 
     public void setRenewSession(final Boolean renewSession) {
         this.renewSession = renewSession;
+    }
+
+    public String getDefaultClient() {
+        return defaultClient;
+    }
+
+    public void setDefaultClient(final String client) {
+        this.defaultClient = client;
     }
 
     public Config getConfig() {

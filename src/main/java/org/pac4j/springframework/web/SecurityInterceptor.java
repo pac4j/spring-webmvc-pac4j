@@ -13,7 +13,7 @@ import static org.pac4j.core.util.CommonHelper.assertNotNull;
 
 /**
  * <p>This interceptor protects an url, based on the {@link #securityLogic}.</p>
- *
+ * <p>
  * <p>The configuration can be provided via contructors or setter methods: {@link #setConfig(Config)} (the security configuration),
  * {@link #setClients(String)} (list of clients for authentication), {@link #setAuthorizers(String)} (list of authorizers),
  * {@link #setMatchers(String)} (list of matchers) and {@link #setMultiProfile(Boolean)} (whether multiple profiles should be kept).</p>
@@ -56,13 +56,14 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws Exception {
+        throws Exception {
 
         assertNotNull("securityLogic", securityLogic);
         assertNotNull("config", config);
         final J2EContext context = new J2EContext(request, response, config.getSessionStore());
 
-        return securityLogic.perform(context, config, (ctx, parameters) -> true, (code, webCtx) -> false, clients, authorizers, matchers, multiProfile);
+        return securityLogic.perform(context, config, (context1, profiles, parameters) -> true
+            , (code, webCtx) -> false, clients, authorizers, matchers, multiProfile);
     }
 
     public SecurityLogic<Boolean, J2EContext> getSecurityLogic() {

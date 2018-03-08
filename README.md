@@ -262,6 +262,11 @@ The following properties are available:
 
 3) `pac4j.callback.renewSession` (optional): it indicates whether the web session must be renewed after login, to avoid session hijacking (`true` by default).
 
+4) `pac4j.callback.saveInSession` (optional): it indicates whether the profile should be saved into the web session (`true` by default)
+
+5) `pac4j.callback.defaultClient` (optional): it defines the default client to use to finish the login process if none is provided on the URL (not defined by default)
+
+
 
 The `CallbackController` must be defined by class scanning to be available on the `/callback` url:
 
