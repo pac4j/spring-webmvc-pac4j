@@ -13,7 +13,7 @@ import static org.pac4j.core.util.CommonHelper.assertNotNull;
 
 /**
  * <p>This interceptor protects an url, based on the {@link #securityLogic}.</p>
- * <p>
+ *
  * <p>The configuration can be provided via contructors or setter methods: {@link #setConfig(Config)} (the security configuration),
  * {@link #setClients(String)} (list of clients for authentication), {@link #setAuthorizers(String)} (list of authorizers),
  * {@link #setMatchers(String)} (list of matchers) and {@link #setMultiProfile(Boolean)} (whether multiple profiles should be kept).</p>
