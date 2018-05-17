@@ -20,7 +20,7 @@ import static org.pac4j.core.util.CommonHelper.assertNotNull;
  *
  * <p>The configuration can be defined via property keys: <code>pac4j.callback.defaultUrl</code> (default url after login if none was requested),
  * <code>pac4j.callback.multiProfile</code> (whether multiple profiles should be kept) and
- * <code>pac4j.callback.renewSession</code> (whether the session must be renewed after login).</p>
+ * <code>pac4j.callback.renewSession</code> (whether the session must be renewed after login).
  * <code>pac4j.callback.path</code> (the URL path to the callback controller that will receive the redirection request).</p>
  * <p>Or it can be defined via setter methods: {@link #setDefaultUrl(String)}, {@link #setMultiProfile(Boolean)} and ({@link #setRenewSession(Boolean)}.</p>
  *
