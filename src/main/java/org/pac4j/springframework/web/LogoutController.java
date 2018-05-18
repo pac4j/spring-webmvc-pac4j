@@ -20,7 +20,8 @@ import static org.pac4j.core.util.CommonHelper.assertNotNull;
  *
  * <p>The configuration can be provided via property keys: <code>pac4j.logout.defaultUrl</code> (default logourl url),
  * <code>pac4j.logout.logoutUrlPattern</code> (pattern that logout urls must match), <code>pac4j.logout.localLogout</code> (whether the application logout must be performed)
- * <code>pac4j.logout.destroySession</code> (whether we must destroy the web session during the local logout), <code>pac4j.logout.centralLogout</code> (whether the centralLogout must be performed).</p>
+ * <code>pac4j.logout.destroySession</code> (whether we must destroy the web session during the local logout), <code>pac4j.logout.centralLogout</code> (whether the centralLogout must be performed).
+ * <code>pac4j.logout.path</code> (the URL path to the logout controller).</p>
  *
  * <p>Or it can be defined via setter methods: {@link #setDefaultUrl(String)}, {@link #setLogoutUrlPattern(String)}, {@link #setLocalLogout(Boolean)},
  * {@link #setDestroySession(Boolean)} and {@link #setCentralLogout(Boolean)}.</p>
@@ -51,7 +52,7 @@ public class LogoutController {
     @Autowired
     private Config config;
 
-    @RequestMapping("/logout")
+    @RequestMapping("${pac4j.logout.path:/logout}")
     public void logout(final HttpServletRequest request, final HttpServletResponse response) {
 
         assertNotNull("logoutLogic", logoutLogic);

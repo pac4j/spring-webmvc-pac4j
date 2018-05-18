@@ -266,6 +266,7 @@ The following properties are available:
 
 5) `pac4j.callback.defaultClient` (optional): it defines the default client to use to finish the login process if none is provided on the URL (not defined by default)
 
+6) `pac4j.callback.path` (optional): the URL path to the callback controller. This needs to match what you have registered with your OIDC Provider (`/callback` by default)
 
 
 The `CallbackController` must be defined by class scanning to be available on the `/callback` url:
@@ -336,6 +337,8 @@ The following properties are available:
 4) `pac4j.logout.destroySession` (optional):  whether we must destroy the web session during the local logout (`false` by default)
 
 5) `pac4j.logout.centralLogout` (optional): whether a central logout must be performed (`false` by default).
+
+6) `pac4j.logout.path` (optional): the URL path to the logout controller (`/logout` by default).
 
 The `LogoutController` must be defined by classpath scanning to be available on the `/logout` url:
 
