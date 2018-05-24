@@ -185,7 +185,7 @@ You can protect (authentication + authorizations) the urls of your Spring applic
 
 2) First, if the user is not authenticated (no profile) and if some clients have been defined in the `clients` parameter, a login is tried for the direct clients.
 
-3) Then, if the user has a profile, authorizations are checked according to the `authorizers` configuration. If the authorizations are valid, the user is granted access. Otherwise, a 403 error page is displayed.
+3) Then, if the user has a profile, authorizations are checked according to the `authorizers` configuration. If the authorizations are valid, the user is granted access. Otherwise, a 403 error page is displayed
 
 4) Finally, if the user is still not authenticated (no profile), he is redirected to the appropriate identity provider if the first defined client is an indirect one in the `clients` configuration. Otherwise, a 401 error page is displayed.
 
@@ -266,7 +266,7 @@ The following properties are available:
 
 5) `pac4j.callback.defaultClient` (optional): it defines the default client to use to finish the login process if none is provided on the URL (not defined by default)
 
-6) `pac4j.callback.path` (optional): the URL path to the callback controller. This needs to match what you have registered with your OIDC Provider (`/callback` by default)
+6) `pac4j.callback.path` (optional): the URL path to the callback controller. This needs to match what you have registered with your OIDC Provider (`/callback` by default).
 
 
 The `CallbackController` must be defined by class scanning to be available on the `/callback` url:
@@ -336,7 +336,7 @@ The following properties are available:
 
 4) `pac4j.logout.destroySession` (optional):  whether we must destroy the web session during the local logout (`false` by default)
 
-5) `pac4j.logout.centralLogout` (optional): whether a central logout must be performed (`false` by default).
+5) `pac4j.logout.centralLogout` (optional): whether a central logout must be performed (`false` by default)
 
 6) `pac4j.logout.path` (optional): the URL path to the logout controller (`/logout` by default).
 

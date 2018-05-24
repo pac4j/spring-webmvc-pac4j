@@ -8,6 +8,7 @@ import org.pac4j.core.http.adapter.J2ENopHttpActionAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import static org.pac4j.core.util.CommonHelper.assertNotNull;
  * <code>pac4j.callback.multiProfile</code> (whether multiple profiles should be kept) and
  * <code>pac4j.callback.renewSession</code> (whether the session must be renewed after login).
  * <code>pac4j.callback.path</code> (the URL path to the callback controller that will receive the redirection request).</p>
+ *
  * <p>Or it can be defined via setter methods: {@link #setDefaultUrl(String)}, {@link #setMultiProfile(Boolean)} and ({@link #setRenewSession(Boolean)}.</p>
  *
  * @author Jerome Leleu
@@ -60,6 +62,12 @@ public class CallbackController {
         callbackLogic.perform(context, config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl,
             this.saveInSession, this.multiProfile, this.renewSession,
             this.defaultClient);
+    }
+
+    @RequestMapping("${pac4j.callback.path/{cn}:/callback/{cn}}")
+    public void callbackWithClientName(final HttpServletRequest request, final HttpServletResponse response, @PathVariable("cn") final String cn) {
+
+        callback(request, response);
     }
 
     public String getDefaultUrl() {
