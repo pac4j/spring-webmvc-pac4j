@@ -29,7 +29,7 @@ Just follow these easy steps to secure your Spring web application:
 You need to add a dependency on:
  
 - the `spring-webmvc-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **3.1.0**)
-- the appropriate `pac4j` [submodules](http://www.pac4j.org/docs/clients.html) (<em>groupId</em>: **org.pac4j**, *version*: **3.1.0**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
+- the appropriate `pac4j` [submodules](http://www.pac4j.org/docs/clients.html) (<em>groupId</em>: **org.pac4j**, *version*: **3.2.0**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
 
 All released artifacts are available in the [Maven central repository](http://search.maven.org/#search%7Cga%7C1%7Cpac4j).
 
@@ -376,7 +376,7 @@ The demo webapps for Spring Web MVC without Spring Boot: [spring-webmvc-pac4j-de
 
 ## Release notes
 
-See the [release notes](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-webmvc-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-webmvc-pac4j/3.1.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/3.1.0/index.html).
+See the [release notes](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-webmvc-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-webmvc-pac4j/3.1.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/3.2.0/index.html).
 
 
 ## Need help?
