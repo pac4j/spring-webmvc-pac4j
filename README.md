@@ -245,7 +245,8 @@ public class SecurityConfig extends WebMvcConfigurerAdapter {
 
 ### 3b) Check authorizations (`AbstractController` / `AbstractRestController`)
 
-While you may use the `SecurityInterceptor` to check authorizations, you may also have your controllers inherit from the appropriate base controllers to benefit from helper methods regarding authorizations checking.
+While you may use the `SecurityInterceptor` to check authorizations, you may also have your controllers inherit from the appropriate base controllers to benefit from helper methods
+to retrieve the HTTP request, the HTTP response, the pac4j configuration, the session store, check authorizations...
 
 For a UI controller, you can inherit from the `AbstractController` and for a REST API controller, you can inherit from the `AbstractRestController`.
 
