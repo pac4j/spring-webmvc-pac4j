@@ -177,7 +177,7 @@ Notice that you can define specific [matchers](http://www.pac4j.org/docs/matcher
 
 ---
 
-### 3) Protect urls (`SecurityInterceptor`)
+### 3a) Protect urls (`SecurityInterceptor`)
 
 You can protect (authentication + authorizations) the urls of your Spring application by using the `SecurityInterceptor` and defining the appropriate mapping. It has the following behaviour:
 
@@ -242,6 +242,28 @@ public class SecurityConfig extends WebMvcConfigurerAdapter {
 
 ```
 
+
+### 3b) Check authorizations (`AbstractController` / `AbstractRestController`)
+
+While you may use the `SecurityInterceptor` to check authorizations, you may also have your controllers inherit from the appropriate base controllers to benefit from helper methods regarding authorizations checking.
+
+For a UI controller, you can inherit from the `AbstractController` and for a REST API controller, you can inherit from the `AbstractRestController`.
+
+In that case, you can check if the user is authenticated using the `isAuthenticated` method or the roles using either the `requireAnyRole` method or the `requireAllRoles` method.
+
+Example:
+
+```java
+@RequestMapping("/facebookadmin/index.html")
+public String facebookadmin(final Map<String, Object> map) {
+
+    requireAnyRole("ROLE_ADMIN");
+
+    return protectedIndex(map);
+}
+```
+
+
 ---
 
 ### 4) Define the callback endpoint only for indirect clients (`CallbackController`)
@@ -304,6 +326,7 @@ The retrieved profile is at least a `CommonProfile`, from which you can retrieve
 ```java
 FacebookProfile facebookProfile = (FacebookProfile) commonProfile;
 ```
+
 
 ---
 
