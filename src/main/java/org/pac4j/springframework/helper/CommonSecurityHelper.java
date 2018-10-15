@@ -1,4 +1,4 @@
-package org.pac4j.springframework.controller;
+package org.pac4j.springframework.helper;
 
 import org.pac4j.core.authorization.authorizer.IsAuthenticatedAuthorizer;
 import org.pac4j.core.authorization.authorizer.RequireAllRolesAuthorizer;
@@ -18,12 +18,12 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * The parent of the abstract controllers.
+ * The common part of the helpers.
  *
  * @author Jerome Leleu
  * @since 3.2.0
  */
-public abstract class AbstractParentController {
+abstract class CommonSecurityHelper {
 
     @Autowired
     protected HttpServletRequest request;
@@ -37,7 +37,7 @@ public abstract class AbstractParentController {
     @Autowired(required = false)
     protected SessionStore<J2EContext> sessionStore;
 
-    protected SessionStore<J2EContext> getSessionStore() {
+    public SessionStore<J2EContext> getSessionStore() {
         if (sessionStore != null) {
             return sessionStore;
         } else if (config != null) {
@@ -47,35 +47,35 @@ public abstract class AbstractParentController {
         }
     }
 
-    protected J2EContext getJ2EContext() {
+    public J2EContext getJ2EContext() {
         return new J2EContext(request, response, getSessionStore());
     }
 
-    protected ProfileManager<CommonProfile> getProfileManager() {
+    public ProfileManager<CommonProfile> getProfileManager() {
         return new ProfileManager<>(getJ2EContext());
     }
 
-    protected Optional<CommonProfile> getProfile() {
+    public Optional<CommonProfile> getProfile() {
         return getProfile(getDefaultReadFromSession());
     }
 
-    protected Optional<CommonProfile> getProfile(final boolean readFromSession) {
+    public Optional<CommonProfile> getProfile(final boolean readFromSession) {
         return getProfileManager().get(readFromSession);
     }
 
-    protected List<CommonProfile> getProfiles() {
+    public List<CommonProfile> getProfiles() {
         return getProfileManager().getAll(getDefaultReadFromSession());
     }
 
-    protected List<CommonProfile> getProfiles(final boolean readFromSession) {
+    public List<CommonProfile> getProfiles(final boolean readFromSession) {
         return getProfileManager().getAll(readFromSession);
     }
 
-    protected List<CommonProfile> isAuthenticated() {
+    public List<CommonProfile> isAuthenticated() {
         return isAuthenticated(getDefaultReadFromSession());
     }
 
-    protected List<CommonProfile> isAuthenticated(final boolean readFromSession) {
+    public List<CommonProfile> isAuthenticated(final boolean readFromSession) {
         final J2EContext context = getJ2EContext();
         final List<CommonProfile> profiles = getProfiles(readFromSession);
 
@@ -86,11 +86,11 @@ public abstract class AbstractParentController {
         return profiles;
     }
 
-    protected void requireAnyRole(final String... roles) {
+    public void requireAnyRole(final String... roles) {
         requireAnyRole(getDefaultReadFromSession(), roles);
     }
 
-    protected void requireAnyRole(final boolean readFromSession, final String... roles) {
+    public void requireAnyRole(final boolean readFromSession, final String... roles) {
         final J2EContext context = getJ2EContext();
         final List<CommonProfile> profiles = isAuthenticated(readFromSession);
 
@@ -100,11 +100,11 @@ public abstract class AbstractParentController {
         }
     }
 
-    protected void requireAllRoles(final String... roles) {
+    public void requireAllRoles(final String... roles) {
         requireAllRoles(getDefaultReadFromSession(), roles);
     }
 
-    protected void requireAllRoles(final boolean readFromSession, final String... roles) {
+    public void requireAllRoles(final boolean readFromSession, final String... roles) {
         final J2EContext context = getJ2EContext();
         final List<CommonProfile> profiles = isAuthenticated(readFromSession);
 

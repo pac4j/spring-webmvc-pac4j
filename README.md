@@ -2,7 +2,7 @@
   <img src="https://pac4j.github.io/pac4j/img/logo-spring-webmvc.png" width="300" />
 </p>
 
-The `spring-webmvc-pac4j` project is an **easy and powerful security library for Spring Web MVC** (with or without Spring Boot) web applications. It supports authentication and authorization, but also logout and advanced features like session fixation and CSRF protection.
+The `spring-webmvc-pac4j` project is an **easy and powerful security library for Spring Web MVC** (with or without Spring Boot) web applications and REST APIs. It supports authentication and authorization, but also logout and advanced features like session fixation and CSRF protection.
 It's based on Java 8, Spring Web MVC 5 and on the **[pac4j security engine](https://github.com/pac4j/pac4j) v3**. It's available under the Apache 2 license.
 
 [**Main concepts and components:**](http://www.pac4j.org/docs/main-concepts-and-components.html)
@@ -19,7 +19,11 @@ It's based on Java 8, Spring Web MVC 5 and on the **[pac4j security engine](http
 
 4) The `CallbackController` finishes the login process for an indirect client
 
-5) The `LogoutController` logs out the user from the application.
+5) The `LogoutController` logs out the user from the application
+
+6) The `WebSecurityHelper` can get the authenticated user profiles and check the user roles for web applications, the `RestSecurityHelper` is for REST APIs
+
+7) The `RequireAnyRole` and `RequireAllRoles` annotations can check the user roles.
 
 
 Just follow these easy steps to secure your Spring web application:
@@ -28,8 +32,8 @@ Just follow these easy steps to secure your Spring web application:
 
 You need to add a dependency on:
  
-- the `spring-webmvc-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **3.2.0-SNAPSHOT**)
-- the appropriate `pac4j` [submodules](http://www.pac4j.org/docs/clients.html) (<em>groupId</em>: **org.pac4j**, *version*: **3.2.0**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
+- the `spring-webmvc-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **4.0.0-SNAPSHOT**)
+- the appropriate `pac4j` [submodules](http://www.pac4j.org/docs/clients.html) (<em>groupId</em>: **org.pac4j**, *version*: **3.3.0**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
 
 All released artifacts are available in the [Maven central repository](http://search.maven.org/#search%7Cga%7C1%7Cpac4j).
 
@@ -177,7 +181,7 @@ Notice that you can define specific [matchers](http://www.pac4j.org/docs/matcher
 
 ---
 
-### 3a) Protect urls (`SecurityInterceptor`)
+### 3) Protect urls (`SecurityInterceptor`)
 
 You can protect (authentication + authorizations) the urls of your Spring application by using the `SecurityInterceptor` and defining the appropriate mapping. It has the following behaviour:
 
@@ -240,28 +244,6 @@ public class SecurityConfig extends WebMvcConfigurerAdapter {
     }
 }
 
-```
-
-
-### 3b) Check authorizations (`AbstractController` / `AbstractRestController`)
-
-While you may use the `SecurityInterceptor` to check authorizations, you may also have your controllers inherit from the appropriate base controllers to benefit from helper methods
-to retrieve the HTTP request, the HTTP response, the pac4j configuration, the session store, check authorizations...
-
-For a UI controller, you can inherit from the `AbstractController` and for a REST API controller, you can inherit from the `AbstractRestController`.
-
-In that case, you can check if the user is authenticated using the `isAuthenticated` method or the roles using either the `requireAnyRole` method or the `requireAllRoles` method.
-
-Example:
-
-```java
-@RequestMapping("/facebookadmin/index.html")
-public String facebookadmin(final Map<String, Object> map) {
-
-    requireAnyRole("ROLE_ADMIN");
-
-    return protectedIndex(map);
-}
 ```
 
 
@@ -331,7 +313,39 @@ FacebookProfile facebookProfile = (FacebookProfile) commonProfile;
 
 ---
 
-### 6) Logout (`LogoutController`)
+
+### 6) Helpers (`WebSecurityHelper` / `RestSecurityHelper`)
+
+You can also use the pac4j helpers to get the current profile(s) or check authorizations.
+
+First, you must register the helpers components:
+
+```java
+@ComponentScan(basePackages = "org.pac4j.springframework.helper")
+```
+
+Then, for a web application, you can inject the `WebSecurityHelper`:
+
+```java
+@Autowired
+private WebSecurityHelper webSecurityHelper;
+```
+
+or for a REST API, you can inject the `RestSecurityHelper`:
+
+```java
+@Autowired
+private RestSecurityHelper restSecurityHelper;
+```
+
+With the injected helper, you can check if:
+- the user is authenticated using the `isAuthenticated` method
+- the user has the appropriate roles using either the `requireAnyRole` method or the `requireAllRoles` method.
+
+
+---
+
+### 7) Logout (`LogoutController`)
 
 The `LogoutController` can handle:
  
@@ -400,7 +414,7 @@ The demo webapps for Spring Web MVC without Spring Boot: [spring-webmvc-pac4j-de
 
 ## Release notes
 
-See the [release notes](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-webmvc-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-webmvc-pac4j/3.2.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/3.2.0/index.html).
+See the [release notes](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-webmvc-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-webmvc-pac4j/4.0.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/3.3.0/index.html).
 
 
 ## Need help?
