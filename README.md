@@ -7,9 +7,9 @@ It's based on Java 8, Spring Web MVC 5 and on the **[pac4j security engine](http
 
 [**Main concepts and components:**](http://www.pac4j.org/docs/main-concepts-and-components.html)
 
-1) A [**client**](http://www.pac4j.org/docs/clients.html) represents an authentication mechanism. It performs the login process and returns a user profile. An indirect client is for UI authentication while a direct client is for web services authentication:
+1) A [**client**](http://www.pac4j.org/docs/clients.html) represents an authentication mechanism. It performs the login process and returns a user profile. An indirect client is for web application authentication while a direct client is for web services authentication:
 
-&#9656; OAuth - SAML - CAS - OpenID Connect - HTTP - OpenID - Google App Engine - LDAP - SQL - JWT - MongoDB - Kerberos - IP address
+&#9656; OAuth - SAML - CAS - OpenID Connect - HTTP - OpenID - Google App Engine - LDAP - SQL - JWT - MongoDB - CouchDB - Kerberos - IP address - Kerberos (SPNEGO) - REST API
 
 2) An [**authorizer**](http://www.pac4j.org/docs/authorizers.html) is meant to check authorizations on the authenticated user profile(s) or on the current web context:
 
@@ -19,11 +19,11 @@ It's based on Java 8, Spring Web MVC 5 and on the **[pac4j security engine](http
 
 4) The `CallbackController` finishes the login process for an indirect client
 
-5) The `LogoutController` logs out the user from the application
+5) The `LogoutController` logs out the user from the application and triggers the logout at the identity provider level
 
-6) The `WebSecurityHelper` gets the authenticated user profiles and checks the user roles for web applications while the `RestSecurityHelper` is for REST APIs
+6) The `WebSecurityHelper` gets the authenticated user profiles and checks the user roles for web applications while the `RestSecurityHelper` is for web services
 
-7) The `@RequireAnyRole` and `@RequireAllRoles` annotations checks the user roles.
+7) The `@RequireAnyRole` and `@RequireAllRoles` annotations check the user roles.
 
 
 ## Usage
@@ -54,6 +54,8 @@ See the [migration guide](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Migr
 
 
 ## Need help?
+
+If you need commercial support (premium support or new/specific features), contact us at [info@pac4j.org](mailto:info@pac4j.org).
 
 If you have any question, please use the following mailing lists:
 
