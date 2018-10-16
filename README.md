@@ -21,9 +21,9 @@ It's based on Java 8, Spring Web MVC 5 and on the **[pac4j security engine](http
 
 5) The `LogoutController` logs out the user from the application
 
-6) The `WebSecurityHelper` can get the authenticated user profiles and check the user roles for web applications, the `RestSecurityHelper` is for REST APIs
+6) The `WebSecurityHelper` gets the authenticated user profiles and checks the user roles for web applications while the `RestSecurityHelper` is for REST APIs
 
-7) The `RequireAnyRole` and `RequireAllRoles` annotations can check the user roles.
+7) The `@RequireAnyRole` and `@RequireAllRoles` annotations checks the user roles.
 
 
 ## Usage
