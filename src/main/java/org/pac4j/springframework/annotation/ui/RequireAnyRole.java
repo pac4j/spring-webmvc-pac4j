@@ -1,4 +1,4 @@
-package org.pac4j.springframework.annotation.rest;
+package org.pac4j.springframework.annotation.ui;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

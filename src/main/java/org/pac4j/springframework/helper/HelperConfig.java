@@ -15,13 +15,13 @@ public class HelperConfig {
 
     @Bean
     @RequestScope
-    public WebSecurityHelper webSecurityHelper() {
-        return new WebSecurityHelper();
+    public UISecurityHelper uiSecurityHelper() {
+        return new UISecurityHelper();
     }
 
     @Bean
     @RequestScope
-    public RestSecurityHelper restSecurityHelper() {
-        return new RestSecurityHelper();
+    public WSSecurityHelper wsSecurityHelper() {
+        return new WSSecurityHelper();
     }
 }

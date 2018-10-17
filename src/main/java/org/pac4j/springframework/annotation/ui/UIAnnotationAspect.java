@@ -1,8 +1,8 @@
-package org.pac4j.springframework.annotation.web;
+package org.pac4j.springframework.annotation.ui;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.pac4j.springframework.helper.WebSecurityHelper;
+import org.pac4j.springframework.helper.UISecurityHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -12,18 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @since 3.2.0
  */
 @Aspect
-public class WebAnnotationAspect {
+public class UIAnnotationAspect {
 
     @Autowired
-    private WebSecurityHelper webSecurityHelper;
+    private UISecurityHelper uiSecurityHelper;
 
     @Before("@annotation(requireAnyRole)")
     public void beforeRequireAnyRole(final RequireAnyRole requireAnyRole) {
-        webSecurityHelper.requireAnyRole(requireAnyRole.value());
+        uiSecurityHelper.requireAnyRole(requireAnyRole.value());
     }
 
     @Before("@annotation(requireAllRoles)")
     public void beforeRequireAllRoles(final RequireAllRoles requireAllRoles) {
-        webSecurityHelper.requireAllRoles(requireAllRoles.value());
+        uiSecurityHelper.requireAllRoles(requireAllRoles.value());
     }
 }

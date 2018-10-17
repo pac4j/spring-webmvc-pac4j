@@ -1,8 +1,8 @@
-package org.pac4j.springframework.annotation.rest;
+package org.pac4j.springframework.annotation.ws;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.pac4j.springframework.helper.RestSecurityHelper;
+import org.pac4j.springframework.helper.WSSecurityHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -12,18 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @since 3.2.0
  */
 @Aspect
-public class RestAnnotationAspect {
+public class WSAnnotationAspect {
 
     @Autowired
-    private RestSecurityHelper restSecurityHelper;
+    private WSSecurityHelper wsSecurityHelper;
 
     @Before("@annotation(requireAnyRole)")
     public void beforeRequireAnyRole(final RequireAnyRole requireAnyRole) {
-        restSecurityHelper.requireAnyRole(requireAnyRole.value());
+        wsSecurityHelper.requireAnyRole(requireAnyRole.value());
     }
 
     @Before("@annotation(requireAllRoles)")
     public void beforeRequireAllRoles(final RequireAllRoles requireAllRoles) {
-        restSecurityHelper.requireAllRoles(requireAllRoles.value());
+        wsSecurityHelper.requireAllRoles(requireAllRoles.value());
     }
 }

@@ -1,7 +1,7 @@
 package org.pac4j.springframework.annotation;
 
-import org.pac4j.springframework.annotation.rest.RestAnnotationAspect;
-import org.pac4j.springframework.annotation.web.WebAnnotationAspect;
+import org.pac4j.springframework.annotation.ws.WSAnnotationAspect;
+import org.pac4j.springframework.annotation.ui.UIAnnotationAspect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -17,12 +17,12 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class AnnotationConfig {
 
     @Bean
-    public RestAnnotationAspect restAnnotationAspect() {
-        return new RestAnnotationAspect();
+    public WSAnnotationAspect wsAnnotationAspect() {
+        return new WSAnnotationAspect();
     }
 
     @Bean
-    public WebAnnotationAspect webAnnotationAspect() {
-        return new WebAnnotationAspect();
+    public UIAnnotationAspect uiAnnotationAspect() {
+        return new UIAnnotationAspect();
     }
 }

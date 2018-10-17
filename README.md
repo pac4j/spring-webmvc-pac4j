@@ -2,7 +2,7 @@
   <img src="https://pac4j.github.io/pac4j/img/logo-spring-webmvc.png" width="300" />
 </p>
 
-The `spring-webmvc-pac4j` project is an **easy and powerful security library for Spring Web MVC web applications and REST APIs (with or without Spring Boot)**. It supports authentication and authorization, but also logout and advanced features like session fixation and CSRF protection.
+The `spring-webmvc-pac4j` project is an **easy and powerful security library for Spring Web MVC web applications and web services (with or without Spring Boot)**. It supports authentication and authorization, but also logout and advanced features like session fixation and CSRF protection.
 It's based on Java 8, Spring Web MVC 5 and on the **[pac4j security engine](https://github.com/pac4j/pac4j) v3**. It's available under the Apache 2 license.
 
 [**Main concepts and components:**](http://www.pac4j.org/docs/main-concepts-and-components.html)
@@ -21,7 +21,7 @@ It's based on Java 8, Spring Web MVC 5 and on the **[pac4j security engine](http
 
 5) The `LogoutController` logs out the user from the application and triggers the logout at the identity provider level
 
-6) The `WebSecurityHelper` gets the authenticated user profiles and checks the user roles for web applications while the `RestSecurityHelper` is for web services
+6) The `UISecurityHelper` gets the authenticated user profiles and checks the user roles for web applications while the `WSSecurityHelper` is for web services
 
 7) The `@RequireAnyRole` and `@RequireAllRoles` annotations check the user roles.
 
