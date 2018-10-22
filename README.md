@@ -21,7 +21,7 @@ It's based on Java 8, Spring Web MVC 5 and on the **[pac4j security engine](http
 
 5) The `LogoutController` logs out the user from the application and triggers the logout at the identity provider level
 
-6) The `UISecurityHelper` gets the authenticated user profiles and checks the user roles for web applications while the `WSSecurityHelper` is for web services
+6) The `J2EContext` and the `ProfileManager` components can be injected
 
 7) The `@RequireAnyRole` and `@RequireAllRoles` annotations check the user roles.
 
@@ -48,7 +48,7 @@ The demo webapps for Spring Web MVC without Spring Boot: [spring-webmvc-pac4j-de
 
 ## Release notes
 
-See the [release notes](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-webmvc-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-webmvc-pac4j/4.0.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/3.3.0/index.html).
+See the [release notes](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-webmvc-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-webmvc-pac4j/3.2.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/3.3.0/index.html).
 
 See the [migration guide](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Migration-guide) as well.
 
@@ -65,7 +65,7 @@ If you have any question, please use the following mailing lists:
 
 ## Development
 
-The version 4.0.0-SNAPSHOT is under development.
+The version 3.2.0-SNAPSHOT is under development.
 
 Maven artifacts are built via Travis: [![Build Status](https://travis-ci.org/pac4j/spring-webmvc-pac4j.png?branch=master)](https://travis-ci.org/pac4j/spring-webmvc-pac4j) and available in the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j). This repository must be added in the Maven `pom.xml` file for example:
 
