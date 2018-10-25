@@ -2,7 +2,7 @@
   <img src="https://pac4j.github.io/pac4j/img/logo-spring-webmvc.png" width="300" />
 </p>
 
-The `spring-webmvc-pac4j` project is an **easy and powerful security library for Spring Web MVC web applications and web services (with or without Spring Boot)**. It supports authentication and authorization, but also logout and advanced features like session fixation and CSRF protection.
+The `spring-webmvc-pac4j` project is an **easy and powerful security library for Spring Web MVC / Spring Boot web applications and web services**. It supports authentication and authorization, but also logout and advanced features like session fixation and CSRF protection.
 It's based on Java 8, Spring Web MVC 5 and on the **[pac4j security engine](https://github.com/pac4j/pac4j) v3**. It's available under the Apache 2 license.
 
 [**Main concepts and components:**](http://www.pac4j.org/docs/main-concepts-and-components.html)
@@ -46,7 +46,11 @@ It's based on Java 8, Spring Web MVC 5 and on the **[pac4j security engine](http
 The demo webapps for Spring Web MVC without Spring Boot: [spring-webmvc-pac4j-demo](https://github.com/pac4j/spring-webmvc-pac4j-demo) or with Spring Boot: [spring-webmvc-pac4j-boot-demo](https://github.com/pac4j/spring-webmvc-pac4j-boot-demo) are available for tests and implement many authentication mechanisms: Facebook, Twitter, form, basic auth, CAS, SAML, OpenID Connect, JWT...
 
 
-## Release notes
+## Versions
+
+The latest released version is the [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.pac4j/spring-webmvc-pac4j/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/org.pac4j/spring-webmvc-pac4j), available in the [Maven central repository](https://repo.maven.apache.org/maven2).
+The next version is [under development](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Under-development).
+
 
 See the [release notes](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-webmvc-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-webmvc-pac4j/3.2.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/3.3.0/index.html).
 
@@ -57,30 +61,9 @@ See the [migration guide](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Migr
 
 If you need commercial support (premium support or new/specific features), contact us at [info@pac4j.org](mailto:info@pac4j.org).
 
-If you have any question, please use the following mailing lists:
+If you have any questions, want to contribute or be notified about the new releases and security fixes, please subscribe to the following [mailing lists](http://www.pac4j.org/mailing-lists.html):
 
-- [pac4j users](https://groups.google.com/forum/?hl=en#!forum/pac4j-users)
-- [pac4j developers](https://groups.google.com/forum/?hl=en#!forum/pac4j-dev)
-
-
-## Development
-
-The version 3.2.0-SNAPSHOT is under development.
-
-Maven artifacts are built via Travis: [![Build Status](https://travis-ci.org/pac4j/spring-webmvc-pac4j.png?branch=master)](https://travis-ci.org/pac4j/spring-webmvc-pac4j) and available in the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j). This repository must be added in the Maven `pom.xml` file for example:
-
-```xml
-<repositories>
-  <repository>
-    <id>sonatype-nexus-snapshots</id>
-    <name>Sonatype Nexus Snapshots</name>
-    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    <releases>
-      <enabled>false</enabled>
-    </releases>
-    <snapshots>
-      <enabled>true</enabled>
-    </snapshots>
-  </repository>
-</repositories>
-```
+- [pac4j-users](https://groups.google.com/forum/?hl=en#!forum/pac4j-users)
+- [pac4j-developers](https://groups.google.com/forum/?hl=en#!forum/pac4j-dev)
+- [pac4j-announce](https://groups.google.com/forum/?hl=en#!forum/pac4j-announce)
+- [pac4j-security](https://groups.google.com/forum/#!forum/pac4j-security)
