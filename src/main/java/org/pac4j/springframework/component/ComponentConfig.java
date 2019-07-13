@@ -1,8 +1,8 @@
 package org.pac4j.springframework.component;
 
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.J2EContext;
-import org.pac4j.core.context.session.J2ESessionStore;
+import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.session.JEESessionStore;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.profile.ProfileManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,22 +32,22 @@ public class ComponentConfig {
     protected Config config;
 
     @Autowired(required = false)
-    protected SessionStore<J2EContext> sessionStore;
+    protected SessionStore<JEEContext> sessionStore;
 
-    protected SessionStore<J2EContext> getSessionStore() {
+    protected SessionStore<JEEContext> getSessionStore() {
         if (sessionStore != null) {
             return sessionStore;
         } else if (config != null) {
             return config.getSessionStore();
         } else {
-            return new J2ESessionStore();
+            return new JEESessionStore();
         }
     }
 
     @Bean
     @RequestScope
-    public J2EContext getWebContext() {
-        return new J2EContext(request, response, getSessionStore());
+    public JEEContext getWebContext() {
+        return new JEEContext(request, response, getSessionStore());
     }
 
     @Bean

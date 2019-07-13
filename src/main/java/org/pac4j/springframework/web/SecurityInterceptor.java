@@ -2,7 +2,7 @@ package org.pac4j.springframework.web;
 
 import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.SecurityLogic;
 import org.pac4j.core.matching.Matcher;
@@ -29,7 +29,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     private static final AtomicInteger internalNumber = new AtomicInteger(1);
 
-    private SecurityLogic<Boolean, J2EContext> securityLogic = new DefaultSecurityLogic<>();
+    private SecurityLogic<Boolean, JEEContext> securityLogic = new DefaultSecurityLogic<>();
 
     private String clients;
 
@@ -106,17 +106,17 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
         assertNotNull("securityLogic", securityLogic);
         assertNotNull("config", config);
-        final J2EContext context = new J2EContext(request, response, config.getSessionStore());
+        final JEEContext context = new JEEContext(request, response, config.getSessionStore());
 
         return securityLogic.perform(context, config, (context1, profiles, parameters) -> true
             , (code, webCtx) -> false, clients, authorizers, matchers, multiProfile);
     }
 
-    public SecurityLogic<Boolean, J2EContext> getSecurityLogic() {
+    public SecurityLogic<Boolean, JEEContext> getSecurityLogic() {
         return securityLogic;
     }
 
-    public void setSecurityLogic(final SecurityLogic<Boolean, J2EContext> securityLogic) {
+    public void setSecurityLogic(final SecurityLogic<Boolean, JEEContext> securityLogic) {
         this.securityLogic = securityLogic;
     }
 
