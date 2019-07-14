@@ -177,7 +177,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         return httpActionAdapter;
     }
 
-    public void setHttpActionAdapter(final HttpActionAdapter<Boolean, JEEContext> httpActionAdapter) {
+    public void setHttpActionAdapter(final HttpActionAdapter httpActionAdapter) {
         this.httpActionAdapter = httpActionAdapter;
     }
 }
