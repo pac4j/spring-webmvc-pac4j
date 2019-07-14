@@ -5,6 +5,7 @@ import org.pac4j.core.config.Config;
 import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.SecurityLogic;
+import org.pac4j.core.http.adapter.HttpActionAdapter;
 import org.pac4j.core.matching.Matcher;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -41,6 +42,8 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     private Config config;
 
+    private HttpActionAdapter httpActionAdapter = (code, webCtx) -> false;
+
     public SecurityInterceptor(final Config config) {
         this.config = config;
     }
@@ -48,6 +51,12 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     public SecurityInterceptor(final Config config, final String clients) {
         this(config);
         this.clients = clients;
+    }
+
+    public SecurityInterceptor(final Config config, final String clients, final HttpActionAdapter httpActionAdapter) {
+        this.clients = clients;
+        this.config = config;
+        this.httpActionAdapter = httpActionAdapter;
     }
 
     public SecurityInterceptor(final Config config, final String clients, final String authorizers) {
@@ -108,8 +117,12 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         assertNotNull("config", config);
         final JEEContext context = new JEEContext(request, response, config.getSessionStore());
 
-        return securityLogic.perform(context, config, (context1, profiles, parameters) -> true
-            , (code, webCtx) -> false, clients, authorizers, matchers, multiProfile);
+        final Object result = securityLogic.perform(context, config, (context1, profiles, parameters) -> true
+            , this.httpActionAdapter, clients, authorizers, matchers, multiProfile);
+        if (result == null) {
+            return false;
+        }
+        return Boolean.parseBoolean(result.toString());
     }
 
     public SecurityLogic<Boolean, JEEContext> getSecurityLogic() {
@@ -158,5 +171,13 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     public void setConfig(final Config config) {
         this.config = config;
+    }
+
+    public HttpActionAdapter getHttpActionAdapter() {
+        return httpActionAdapter;
+    }
+
+    public void setHttpActionAdapter(final HttpActionAdapter<Boolean, JEEContext> httpActionAdapter) {
+        this.httpActionAdapter = httpActionAdapter;
     }
 }
