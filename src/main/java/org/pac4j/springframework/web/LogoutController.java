@@ -4,6 +4,7 @@ import org.pac4j.core.config.Config;
 import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.engine.DefaultLogoutLogic;
 import org.pac4j.core.engine.LogoutLogic;
+import org.pac4j.core.http.adapter.JEEHttpActionAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -58,7 +59,8 @@ public class LogoutController {
         assertNotNull("config", config);
         final JEEContext context = new JEEContext(request, response, config.getSessionStore());
 
-        logoutLogic.perform(context, config, (action, theContext) -> null, this.defaultUrl, this.logoutUrlPattern, this.localLogout, this.destroySession, this.centralLogout);
+        logoutLogic.perform(context, config, JEEHttpActionAdapter.INSTANCE, this.defaultUrl,
+            this.logoutUrlPattern, this.localLogout, this.destroySession, this.centralLogout);
     }
 
     public String getDefaultUrl() {

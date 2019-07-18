@@ -4,6 +4,7 @@ import org.pac4j.core.config.Config;
 import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.engine.CallbackLogic;
 import org.pac4j.core.engine.DefaultCallbackLogic;
+import org.pac4j.core.http.adapter.JEEHttpActionAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -57,7 +58,7 @@ public class CallbackController {
         assertNotNull("callbackLogic", callbackLogic);
         assertNotNull("config", config);
         final JEEContext context = new JEEContext(request, response, config.getSessionStore());
-        callbackLogic.perform(context, config, (action, theContext) -> null, this.defaultUrl,
+        callbackLogic.perform(context, config, JEEHttpActionAdapter.INSTANCE, this.defaultUrl,
             this.saveInSession, this.multiProfile, this.renewSession,
             this.defaultClient);
     }

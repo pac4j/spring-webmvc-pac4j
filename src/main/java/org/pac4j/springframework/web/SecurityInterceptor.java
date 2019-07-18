@@ -6,6 +6,7 @@ import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.SecurityLogic;
 import org.pac4j.core.http.adapter.HttpActionAdapter;
+import org.pac4j.core.http.adapter.JEEHttpActionAdapter;
 import org.pac4j.core.matching.Matcher;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -42,7 +43,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     private Config config;
 
-    private HttpActionAdapter httpActionAdapter = (code, webCtx) -> false;
+    private HttpActionAdapter httpActionAdapter = JEEHttpActionAdapter.INSTANCE;
 
     public SecurityInterceptor(final Config config) {
         this.config = config;
