@@ -1,10 +1,10 @@
 package org.pac4j.springframework.web;
 
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.engine.CallbackLogic;
 import org.pac4j.core.engine.DefaultCallbackLogic;
-import org.pac4j.core.http.adapter.J2ENopHttpActionAdapter;
+import org.pac4j.core.http.adapter.JEEHttpActionAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -32,7 +32,7 @@ import static org.pac4j.core.util.CommonHelper.assertNotNull;
 @Controller
 public class CallbackController {
 
-    private CallbackLogic<Object, J2EContext> callbackLogic = new DefaultCallbackLogic<>();
+    private CallbackLogic<Object, JEEContext> callbackLogic = new DefaultCallbackLogic<>();
 
     @Value("${pac4j.callback.defaultUrl:#{null}}")
     private String defaultUrl;
@@ -57,9 +57,8 @@ public class CallbackController {
 
         assertNotNull("callbackLogic", callbackLogic);
         assertNotNull("config", config);
-        final J2EContext context = new J2EContext(request, response, config.getSessionStore());
-
-        callbackLogic.perform(context, config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl,
+        final JEEContext context = new JEEContext(request, response, config.getSessionStore());
+        callbackLogic.perform(context, config, JEEHttpActionAdapter.INSTANCE, this.defaultUrl,
             this.saveInSession, this.multiProfile, this.renewSession,
             this.defaultClient);
     }
@@ -78,11 +77,11 @@ public class CallbackController {
         this.defaultUrl = defaultUrl;
     }
 
-    public CallbackLogic<Object, J2EContext> getCallbackLogic() {
+    public CallbackLogic<Object, JEEContext> getCallbackLogic() {
         return callbackLogic;
     }
 
-    public void setCallbackLogic(final CallbackLogic<Object, J2EContext> callbackLogic) {
+    public void setCallbackLogic(final CallbackLogic<Object, JEEContext> callbackLogic) {
         this.callbackLogic = callbackLogic;
     }
 

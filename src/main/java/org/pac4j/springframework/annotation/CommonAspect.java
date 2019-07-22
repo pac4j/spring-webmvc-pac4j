@@ -3,8 +3,9 @@ package org.pac4j.springframework.annotation;
 import org.pac4j.core.authorization.authorizer.IsAuthenticatedAuthorizer;
 import org.pac4j.core.authorization.authorizer.RequireAllRolesAuthorizer;
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
-import org.pac4j.core.context.J2EContext;
-import org.pac4j.core.exception.HttpAction;
+import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.exception.http.ForbiddenAction;
+import org.pac4j.core.exception.http.UnauthorizedAction;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class CommonAspect {
     private static final IsAuthenticatedAuthorizer IS_AUTHENTICATED_AUTHORIZER = new IsAuthenticatedAuthorizer();
 
     @Autowired
-    private J2EContext webContext;
+    private JEEContext webContext;
 
     @Autowired
     private ProfileManager profileManager;
@@ -31,7 +32,7 @@ public class CommonAspect {
         final List<CommonProfile> profiles = profileManager.getAll(readFromSession);
 
         if (!IS_AUTHENTICATED_AUTHORIZER.isAuthorized(webContext, profiles)) {
-            throw HttpAction.unauthorized(webContext);
+            throw UnauthorizedAction.INSTANCE;
         }
         return profiles;
     }
@@ -41,7 +42,7 @@ public class CommonAspect {
 
         final RequireAnyRoleAuthorizer<CommonProfile> authorizer = new RequireAnyRoleAuthorizer<>(roles);
         if (!authorizer.isAuthorized(webContext, profiles)) {
-            throw HttpAction.forbidden(webContext);
+            throw ForbiddenAction.INSTANCE;
         }
     }
 
@@ -50,7 +51,7 @@ public class CommonAspect {
 
         final RequireAllRolesAuthorizer<CommonProfile> authorizer = new RequireAllRolesAuthorizer<>(roles);
         if (!authorizer.isAuthorized(webContext, profiles)) {
-            throw HttpAction.forbidden(webContext);
+            throw ForbiddenAction.INSTANCE;
         }
     }
 }

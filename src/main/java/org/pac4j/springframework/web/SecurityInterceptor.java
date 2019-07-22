@@ -2,9 +2,11 @@ package org.pac4j.springframework.web;
 
 import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.SecurityLogic;
+import org.pac4j.core.http.adapter.HttpActionAdapter;
+import org.pac4j.core.http.adapter.JEEHttpActionAdapter;
 import org.pac4j.core.matching.Matcher;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -29,7 +31,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     private static final AtomicInteger internalNumber = new AtomicInteger(1);
 
-    private SecurityLogic<Boolean, J2EContext> securityLogic = new DefaultSecurityLogic<>();
+    private SecurityLogic<Boolean, JEEContext> securityLogic = new DefaultSecurityLogic<>();
 
     private String clients;
 
@@ -41,6 +43,8 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     private Config config;
 
+    private HttpActionAdapter httpActionAdapter = JEEHttpActionAdapter.INSTANCE;
+
     public SecurityInterceptor(final Config config) {
         this.config = config;
     }
@@ -48,6 +52,12 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     public SecurityInterceptor(final Config config, final String clients) {
         this(config);
         this.clients = clients;
+    }
+
+    public SecurityInterceptor(final Config config, final String clients, final HttpActionAdapter httpActionAdapter) {
+        this.clients = clients;
+        this.config = config;
+        this.httpActionAdapter = httpActionAdapter;
     }
 
     public SecurityInterceptor(final Config config, final String clients, final String authorizers) {
@@ -106,17 +116,21 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
         assertNotNull("securityLogic", securityLogic);
         assertNotNull("config", config);
-        final J2EContext context = new J2EContext(request, response, config.getSessionStore());
+        final JEEContext context = new JEEContext(request, response, config.getSessionStore());
 
-        return securityLogic.perform(context, config, (context1, profiles, parameters) -> true
-            , (code, webCtx) -> false, clients, authorizers, matchers, multiProfile);
+        final Object result = securityLogic.perform(context, config, (context1, profiles, parameters) -> true
+            , this.httpActionAdapter, clients, authorizers, matchers, multiProfile);
+        if (result == null) {
+            return false;
+        }
+        return Boolean.parseBoolean(result.toString());
     }
 
-    public SecurityLogic<Boolean, J2EContext> getSecurityLogic() {
+    public SecurityLogic<Boolean, JEEContext> getSecurityLogic() {
         return securityLogic;
     }
 
-    public void setSecurityLogic(final SecurityLogic<Boolean, J2EContext> securityLogic) {
+    public void setSecurityLogic(final SecurityLogic<Boolean, JEEContext> securityLogic) {
         this.securityLogic = securityLogic;
     }
 
@@ -158,5 +172,13 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     public void setConfig(final Config config) {
         this.config = config;
+    }
+
+    public HttpActionAdapter getHttpActionAdapter() {
+        return httpActionAdapter;
+    }
+
+    public void setHttpActionAdapter(final HttpActionAdapter httpActionAdapter) {
+        this.httpActionAdapter = httpActionAdapter;
     }
 }
