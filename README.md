@@ -66,4 +66,3 @@ If you have any questions, want to contribute or be notified about the new relea
 - [pac4j-developers](https://groups.google.com/forum/?hl=en#!forum/pac4j-dev)
 - [pac4j-announce](https://groups.google.com/forum/?hl=en#!forum/pac4j-announce)
 - [pac4j-security](https://groups.google.com/forum/#!forum/pac4j-security)
-
