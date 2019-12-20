@@ -43,7 +43,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     private Config config;
 
-    private HttpActionAdapter httpActionAdapter = JEEHttpActionAdapter.INSTANCE;
+    private HttpActionAdapter httpActionAdapter;
 
     public SecurityInterceptor(final Config config) {
         this.config = config;
@@ -118,8 +118,8 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         assertNotNull("config", config);
         final JEEContext context = new JEEContext(request, response, config.getSessionStore());
 
-        final Object result = securityLogic.perform(context, config, (context1, profiles, parameters) -> true
-            , this.httpActionAdapter, clients, authorizers, matchers, multiProfile);
+        final Object result = securityLogic.perform(context, config, (context1, profiles, parameters) -> true,
+                JEEHttpActionAdapter.findBestAdapter(httpActionAdapter, config), clients, authorizers, matchers, multiProfile);
         if (result == null) {
             return false;
         }

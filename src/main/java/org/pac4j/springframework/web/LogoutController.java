@@ -59,7 +59,7 @@ public class LogoutController {
         assertNotNull("config", config);
         final JEEContext context = new JEEContext(request, response, config.getSessionStore());
 
-        logoutLogic.perform(context, config, JEEHttpActionAdapter.INSTANCE, this.defaultUrl,
+        logoutLogic.perform(context, config, JEEHttpActionAdapter.findBestAdapter(null, config), this.defaultUrl,
             this.logoutUrlPattern, this.localLogout, this.destroySession, this.centralLogout);
     }
 

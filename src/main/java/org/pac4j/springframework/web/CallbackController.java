@@ -58,9 +58,8 @@ public class CallbackController {
         assertNotNull("callbackLogic", callbackLogic);
         assertNotNull("config", config);
         final JEEContext context = new JEEContext(request, response, config.getSessionStore());
-        callbackLogic.perform(context, config, JEEHttpActionAdapter.INSTANCE, this.defaultUrl,
-            this.saveInSession, this.multiProfile, this.renewSession,
-            this.defaultClient);
+        callbackLogic.perform(context, config, JEEHttpActionAdapter.findBestAdapter(null, config),
+                this.defaultUrl, this.saveInSession, this.multiProfile, this.renewSession, this.defaultClient);
     }
 
     @RequestMapping("${pac4j.callback.path/{cn}:/callback/{cn}}")
