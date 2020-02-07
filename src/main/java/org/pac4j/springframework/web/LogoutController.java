@@ -2,9 +2,13 @@ package org.pac4j.springframework.web;
 
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.session.JEESessionStore;
+import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.engine.DefaultLogoutLogic;
 import org.pac4j.core.engine.LogoutLogic;
+import org.pac4j.core.http.adapter.HttpActionAdapter;
 import org.pac4j.core.http.adapter.JEEHttpActionAdapter;
+import org.pac4j.core.util.FindBest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -13,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static org.pac4j.core.util.CommonHelper.assertNotNull;
-
 /**
- * <p>This controller handles the (application + identity provider) logout process, based on the {@link #logoutLogic}.</p>
+ * <p>This controller handles the (application + identity provider) logout process, based on the {@link #logoutLogic} and {@link #config}.</p>
  *
  * <p>The configuration can be provided via property keys: <code>pac4j.logout.defaultUrl</code> (default logourl url),
- * <code>pac4j.logout.logoutUrlPattern</code> (pattern that logout urls must match), <code>pac4j.logout.localLogout</code> (whether the application logout must be performed)
- * <code>pac4j.logout.destroySession</code> (whether we must destroy the web session during the local logout), <code>pac4j.logout.centralLogout</code> (whether the centralLogout must be performed).
+ * <code>pac4j.logout.logoutUrlPattern</code> (pattern that logout urls must match),
+ * <code>pac4j.logout.localLogout</code> (whether the application logout must be performed)
+ * <code>pac4j.logout.destroySession</code> (whether we must destroy the web session during the local logout),
+ * <code>pac4j.logout.centralLogout</code> (whether the centralLogout must be performed).
  * <code>pac4j.logout.path</code> (the URL path to the logout controller).</p>
  *
  * <p>Or it can be defined via setter methods: {@link #setDefaultUrl(String)}, {@link #setLogoutUrlPattern(String)}, {@link #setLocalLogout(Boolean)},
@@ -32,7 +36,7 @@ import static org.pac4j.core.util.CommonHelper.assertNotNull;
 @Controller
 public class LogoutController {
 
-    private LogoutLogic<Object, JEEContext> logoutLogic = new DefaultLogoutLogic<>();
+    private LogoutLogic<Object, JEEContext> logoutLogic;
 
     @Value("${pac4j.logout.defaultUrl:#{null}}")
     private String defaultUrl;
@@ -55,12 +59,13 @@ public class LogoutController {
     @RequestMapping("${pac4j.logout.path:/logout}")
     public void logout(final HttpServletRequest request, final HttpServletResponse response) {
 
-        assertNotNull("logoutLogic", logoutLogic);
-        assertNotNull("config", config);
-        final JEEContext context = new JEEContext(request, response, config.getSessionStore());
+        final SessionStore<JEEContext> bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
+        final HttpActionAdapter<Object, JEEContext> bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
+        final LogoutLogic<Object, JEEContext> bestLogic = FindBest.logoutLogic(null, config, DefaultLogoutLogic.INSTANCE);
 
-        logoutLogic.perform(context, config, JEEHttpActionAdapter.findBestAdapter(null, config), this.defaultUrl,
-            this.logoutUrlPattern, this.localLogout, this.destroySession, this.centralLogout);
+        final JEEContext context = new JEEContext(request, response, bestSessionStore);
+        bestLogic.perform(context, config, bestAdapter, this.defaultUrl, this.logoutUrlPattern,
+                this.localLogout, this.destroySession, this.centralLogout);
     }
 
     public String getDefaultUrl() {

@@ -5,6 +5,7 @@ import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.context.session.JEESessionStore;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.profile.ProfileManager;
+import org.pac4j.core.util.FindBest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,13 +36,7 @@ public class ComponentConfig {
     protected SessionStore<JEEContext> sessionStore;
 
     protected SessionStore<JEEContext> getSessionStore() {
-        if (sessionStore != null) {
-            return sessionStore;
-        } else if (config != null) {
-            return config.getSessionStore();
-        } else {
-            return new JEESessionStore();
-        }
+        return FindBest.sessionStore(sessionStore, config, JEESessionStore.INSTANCE);
     }
 
     @Bean

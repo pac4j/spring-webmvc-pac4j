@@ -3,11 +3,14 @@ package org.pac4j.springframework.web;
 import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.session.JEESessionStore;
+import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.SecurityLogic;
 import org.pac4j.core.http.adapter.HttpActionAdapter;
 import org.pac4j.core.http.adapter.JEEHttpActionAdapter;
 import org.pac4j.core.matching.matcher.Matcher;
+import org.pac4j.core.util.FindBest;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,14 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.pac4j.core.util.CommonHelper.assertNotNull;
-
 /**
  * <p>This interceptor protects an url, based on the {@link #securityLogic}.</p>
  *
  * <p>The configuration can be provided via contructors or setter methods: {@link #setConfig(Config)} (the security configuration),
  * {@link #setClients(String)} (list of clients for authentication), {@link #setAuthorizers(String)} (list of authorizers),
- * {@link #setMatchers(String)} (list of matchers) and {@link #setMultiProfile(Boolean)} (whether multiple profiles should be kept).</p>
+ * {@link #setMatchers(String)} (list of matchers), {@link #setMultiProfile(Boolean)} (whether multiple profiles should be kept)
+ * and {@link #setHttpActionAdapter(HttpActionAdapter)} (the HTTP action adapter).</p>
  *
  * @author Jerome Leleu
  * @since 1.0.0
@@ -31,7 +33,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     private static final AtomicInteger internalNumber = new AtomicInteger(1);
 
-    private SecurityLogic<Boolean, JEEContext> securityLogic = new DefaultSecurityLogic<>();
+    private SecurityLogic<Boolean, JEEContext> securityLogic;
 
     private String clients;
 
@@ -111,15 +113,14 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-        throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
-        assertNotNull("securityLogic", securityLogic);
-        assertNotNull("config", config);
-        final JEEContext context = new JEEContext(request, response, config.getSessionStore());
+        final SessionStore<JEEContext> bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
+        final HttpActionAdapter<Boolean, JEEContext> bestAdapter = FindBest.httpActionAdapter(httpActionAdapter, config, JEEHttpActionAdapter.INSTANCE);
+        final SecurityLogic<Boolean, JEEContext> bestLogic = FindBest.securityLogic(securityLogic, config, DefaultSecurityLogic.INSTANCE);
 
-        final Object result = securityLogic.perform(context, config, (context1, profiles, parameters) -> true,
-                JEEHttpActionAdapter.findBestAdapter(httpActionAdapter, config), clients, authorizers, matchers, multiProfile);
+        final JEEContext context = new JEEContext(request, response, bestSessionStore);
+        final Object result = bestLogic.perform(context, config, (ctx, profiles, parameters) -> true, bestAdapter, clients, authorizers, matchers, multiProfile);
         if (result == null) {
             return false;
         }
