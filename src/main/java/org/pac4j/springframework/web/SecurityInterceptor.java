@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * <p>This interceptor protects an url, based on the {@link #securityLogic}.</p>
+ * <p>This interceptor protects an url, based on the {@link SecurityLogic}.</p>
  *
  * <p>The configuration can be provided via contructors or setter methods: {@link #setConfig(Config)} (the security configuration),
  * {@link #setClients(String)} (list of clients for authentication), {@link #setAuthorizers(String)} (list of authorizers),

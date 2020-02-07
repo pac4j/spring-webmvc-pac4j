@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * <p>This controller finishes the login process for an indirect client, based on the {@link #callbackLogic} and {@link #config}.</p>
+ * <p>This controller finishes the login process for an indirect client, based on the {@link CallbackLogic} and {@link #config}.</p>
  *
  * <p>The configuration can be defined via property keys: <code>pac4j.callback.defaultUrl</code> (default url after login if none was requested),
  * <code>pac4j.callback.multiProfile</code> (whether multiple profiles should be kept),
@@ -61,7 +61,7 @@ public class CallbackController {
 
         final SessionStore<JEEContext> bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
         final HttpActionAdapter<Object, JEEContext> bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
-        final CallbackLogic<Object, JEEContext> bestLogic = FindBest.callbackLogic(null, config, DefaultCallbackLogic.INSTANCE);
+        final CallbackLogic<Object, JEEContext> bestLogic = FindBest.callbackLogic(callbackLogic, config, DefaultCallbackLogic.INSTANCE);
 
         final JEEContext context = new JEEContext(request, response, bestSessionStore);
         bestLogic.perform(context, config, bestAdapter, this.defaultUrl, this.saveInSession, this.multiProfile,

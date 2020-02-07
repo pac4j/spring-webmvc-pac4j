@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * <p>This controller handles the (application + identity provider) logout process, based on the {@link #logoutLogic} and {@link #config}.</p>
+ * <p>This controller handles the (application + identity provider) logout process, based on the {@link LogoutLogic} and {@link #config}.</p>
  *
  * <p>The configuration can be provided via property keys: <code>pac4j.logout.defaultUrl</code> (default logourl url),
  * <code>pac4j.logout.logoutUrlPattern</code> (pattern that logout urls must match),
@@ -61,7 +61,7 @@ public class LogoutController {
 
         final SessionStore<JEEContext> bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
         final HttpActionAdapter<Object, JEEContext> bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
-        final LogoutLogic<Object, JEEContext> bestLogic = FindBest.logoutLogic(null, config, DefaultLogoutLogic.INSTANCE);
+        final LogoutLogic<Object, JEEContext> bestLogic = FindBest.logoutLogic(logoutLogic, config, DefaultLogoutLogic.INSTANCE);
 
         final JEEContext context = new JEEContext(request, response, bestSessionStore);
         bestLogic.perform(context, config, bestAdapter, this.defaultUrl, this.logoutUrlPattern,
