@@ -19,16 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * <p>This controller finishes the login process for an indirect client, based on the {@link CallbackLogic} and {@link #config}.</p>
- *
- * <p>The configuration can be defined via property keys: <code>pac4j.callback.defaultUrl</code> (default url after login if none was requested),
- * <code>pac4j.callback.multiProfile</code> (whether multiple profiles should be kept),
- * <code>pac4j.callback.saveInSession</code> (whether the authenticated profile should be saved in session),
- * <code>pac4j.callback.renewSession</code> (whether the session must be renewed after login) and
- * <code>pac4j.callback.path</code> (the URL path to the callback controller that will receive the redirection request).</p>
- *
- * <p>Or it can be defined via setter methods: {@link #setDefaultUrl(String)}, {@link #setMultiProfile(Boolean)}, {@link #setSaveInSession(Boolean)}
- * and ({@link #setRenewSession(Boolean)}.</p>
+ * <p>This controller finishes the login process for an indirect client.</p>
  *
  * @author Jerome Leleu
  * @since 1.0.0

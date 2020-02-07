@@ -18,17 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * <p>This controller handles the (application + identity provider) logout process, based on the {@link LogoutLogic} and {@link #config}.</p>
- *
- * <p>The configuration can be provided via property keys: <code>pac4j.logout.defaultUrl</code> (default logourl url),
- * <code>pac4j.logout.logoutUrlPattern</code> (pattern that logout urls must match),
- * <code>pac4j.logout.localLogout</code> (whether the application logout must be performed)
- * <code>pac4j.logout.destroySession</code> (whether we must destroy the web session during the local logout),
- * <code>pac4j.logout.centralLogout</code> (whether the centralLogout must be performed).
- * <code>pac4j.logout.path</code> (the URL path to the logout controller).</p>
- *
- * <p>Or it can be defined via setter methods: {@link #setDefaultUrl(String)}, {@link #setLogoutUrlPattern(String)}, {@link #setLocalLogout(Boolean)},
- * {@link #setDestroySession(Boolean)} and {@link #setCentralLogout(Boolean)}.</p>
+ * <p>This controller handles the (application + identity provider) logout process.</p>
  *
  * @author Jerome Leleu
  * @since 1.0.0
