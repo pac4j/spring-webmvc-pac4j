@@ -15,7 +15,7 @@ It's based on Java 8, Spring Web MVC 5 and on the **[pac4j security engine](http
 
 &#9656; Roles / permissions - Anonymous / remember-me / (fully) authenticated - Profile type, attribute -  CORS - CSRF - Security headers - IP address, HTTP method
 
-3) A [**matcher**](http://www.pac4j.org/docs/matchers.html) defines whether the `SecurityInterceptor` must be applied and can be used for additional web processing.
+3) A [**matcher**](http://www.pac4j.org/docs/matchers.html) defines whether the `SecurityInterceptor` must be applied and can be used for additional web processing
 
 4) The `SecurityInterceptor` protects an url by checking that the user is authenticated and that the authorizations are valid, according to the clients and authorizers configuration. If the user is not authenticated, it performs authentication for direct clients or starts the login process for indirect clients
 
