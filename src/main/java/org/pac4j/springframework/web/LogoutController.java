@@ -2,6 +2,7 @@ package org.pac4j.springframework.web;
 
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.JEEContextFactory;
 import org.pac4j.core.context.session.JEESessionStore;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.engine.DefaultLogoutLogic;
@@ -53,7 +54,8 @@ public class LogoutController {
         final HttpActionAdapter<Object, JEEContext> bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
         final LogoutLogic<Object, JEEContext> bestLogic = FindBest.logoutLogic(logoutLogic, config, DefaultLogoutLogic.INSTANCE);
 
-        final JEEContext context = new JEEContext(request, response, bestSessionStore);
+        final JEEContext context = (JEEContext) FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE)
+                .newContext(request, response, bestSessionStore);
         bestLogic.perform(context, config, bestAdapter, this.defaultUrl, this.logoutUrlPattern,
                 this.localLogout, this.destroySession, this.centralLogout);
     }

@@ -3,6 +3,7 @@ package org.pac4j.springframework.web;
 import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.JEEContextFactory;
 import org.pac4j.core.context.session.JEESessionStore;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.engine.DefaultSecurityLogic;
@@ -114,7 +115,8 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         final HttpActionAdapter<Boolean, JEEContext> bestAdapter = FindBest.httpActionAdapter(httpActionAdapter, config, JEEHttpActionAdapter.INSTANCE);
         final SecurityLogic<Boolean, JEEContext> bestLogic = FindBest.securityLogic(securityLogic, config, DefaultSecurityLogic.INSTANCE);
 
-        final JEEContext context = new JEEContext(request, response, bestSessionStore);
+        final JEEContext context = (JEEContext) FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE)
+                .newContext(request, response, bestSessionStore);
         final Object result = bestLogic.perform(context, config, (ctx, profiles, parameters) -> true, bestAdapter, clients, authorizers, matchers, multiProfile);
         if (result == null) {
             return false;
