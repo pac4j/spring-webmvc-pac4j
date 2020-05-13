@@ -12,7 +12,7 @@
     <artifactId>spring-webmvc-pac4j</artifactId>
     <packaging>jar</packaging>
     <name>Spring Web MVC security framework based on pac4j</name>
-    <version>4.0.1-SNAPSHOT</version>
+    <version>4.0.1</version>
     <description>Security library for Spring Web MVC based on pac4j</description>
     <url>https://github.com/pac4j/spring-webmvc-pac4j</url>
 
