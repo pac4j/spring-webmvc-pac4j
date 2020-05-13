@@ -11,7 +11,7 @@
     <groupId>org.pac4j</groupId>
     <artifactId>spring-webmvc-pac4j</artifactId>
     <packaging>jar</packaging>
-    <name>pac4j implementation for Spring Web MVC</name>
+    <name>Spring Web MVC security framework based on pac4j</name>
     <version>4.0.1-SNAPSHOT</version>
     <description>Security library for Spring Web MVC based on pac4j</description>
     <url>https://github.com/pac4j/spring-webmvc-pac4j</url>
@@ -58,7 +58,6 @@
         <spring.version>5.2.6.RELEASE</spring.version>
         <aspectj.version>1.9.5</aspectj.version>
         <java.version>1.8</java.version>
-        <jackson.version>2.11.0</jackson.version>
     </properties>
 
     <dependencies>
@@ -92,12 +91,6 @@
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-core</artifactId>
             <version>${pac4j.version}</version>
-        </dependency>
-        <!-- forces this version of Jackson for Spring -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
     </dependencies>
 

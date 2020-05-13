@@ -23,7 +23,7 @@ It's based on Java 8, Spring Web MVC 5 and on the **[pac4j security engine](http
 
 6) The `LogoutController` logs out the user from the application and triggers the logout at the identity provider level
 
-7) The `J2EContext` and the `ProfileManager` components can be injected
+7) The `JEEContext` and the `ProfileManager` components can be injected
 
 8) The `@RequireAnyRole` and `@RequireAllRoles` annotations check the user roles.
 
@@ -53,7 +53,7 @@ The demo webapps for Spring Web MVC without Spring Boot: [spring-webmvc-pac4j-de
 The latest released version is the [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.pac4j/spring-webmvc-pac4j/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/org.pac4j/spring-webmvc-pac4j), available in the [Maven central repository](https://repo.maven.apache.org/maven2).
 The [next version](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Next-version) is under development.
 
-See the [release notes](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Release-Notes). Learn more by browsing the [pac4j documentation](https://www.javadoc.io/doc/org.pac4j/pac4j-core/4.0.0/index.html) and the [spring-webmvc-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-webmvc-pac4j/4.0.0).
+See the [release notes](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Release-Notes). Learn more by browsing the [pac4j documentation](https://www.javadoc.io/doc/org.pac4j/pac4j-core/4.0.1/index.html) and the [spring-webmvc-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-webmvc-pac4j/4.0.1).
 
 See the [migration guide](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Migration-guide) as well.
 
