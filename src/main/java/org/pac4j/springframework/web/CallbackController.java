@@ -28,16 +28,10 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class CallbackController {
 
-    private CallbackLogic<Object, JEEContext> callbackLogic;
+    private CallbackLogic callbackLogic;
 
     @Value("${pac4j.callback.defaultUrl:#{null}}")
     private String defaultUrl;
-
-    @Value("${pac4j.callback.multiProfile:#{null}}")
-    private Boolean multiProfile;
-
-    @Value("${pac4j.callback.saveInSession:#{null}}")
-    private Boolean saveInSession;
 
     @Value("${pac4j.callback.renewSession:#{null}}")
     private Boolean renewSession;
@@ -51,14 +45,13 @@ public class CallbackController {
     @RequestMapping("${pac4j.callback.path:/callback}")
     public void callback(final HttpServletRequest request, final HttpServletResponse response) {
 
-        final SessionStore<JEEContext> bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
-        final HttpActionAdapter<Object, JEEContext> bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
-        final CallbackLogic<Object, JEEContext> bestLogic = FindBest.callbackLogic(callbackLogic, config, DefaultCallbackLogic.INSTANCE);
+        final SessionStore bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
+        final HttpActionAdapter bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
+        final CallbackLogic bestLogic = FindBest.callbackLogic(callbackLogic, config, DefaultCallbackLogic.INSTANCE);
 
-        final JEEContext context = (JEEContext) FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE)
-                .newContext(request, response, bestSessionStore);
-        bestLogic.perform(context, config, bestAdapter, this.defaultUrl, this.saveInSession, this.multiProfile,
-                this.renewSession, this.defaultClient);
+        final JEEContext context = (JEEContext) FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response, bestSessionStore);
+
+        bestLogic.perform(context, config, bestAdapter, this.defaultUrl, this.renewSession, this.defaultClient);
     }
 
     @RequestMapping("${pac4j.callback.path/{cn}:/callback/{cn}}")
@@ -75,28 +68,12 @@ public class CallbackController {
         this.defaultUrl = defaultUrl;
     }
 
-    public CallbackLogic<Object, JEEContext> getCallbackLogic() {
+    public CallbackLogic getCallbackLogic() {
         return callbackLogic;
     }
 
-    public void setCallbackLogic(final CallbackLogic<Object, JEEContext> callbackLogic) {
+    public void setCallbackLogic(final CallbackLogic callbackLogic) {
         this.callbackLogic = callbackLogic;
-    }
-
-    public Boolean getMultiProfile() {
-        return multiProfile;
-    }
-
-    public void setMultiProfile(final Boolean multiProfile) {
-        this.multiProfile = multiProfile;
-    }
-
-    public Boolean getSaveInSession() {
-        return saveInSession;
-    }
-
-    public void setSaveInSession(final Boolean saveInSession) {
-        this.saveInSession = saveInSession;
     }
 
     public Boolean getRenewSession() {

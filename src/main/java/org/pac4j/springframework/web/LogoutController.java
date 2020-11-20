@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class LogoutController {
 
-    private LogoutLogic<Object, JEEContext> logoutLogic;
+    private LogoutLogic logoutLogic;
 
     @Value("${pac4j.logout.defaultUrl:#{null}}")
     private String defaultUrl;
@@ -50,14 +50,13 @@ public class LogoutController {
     @RequestMapping("${pac4j.logout.path:/logout}")
     public void logout(final HttpServletRequest request, final HttpServletResponse response) {
 
-        final SessionStore<JEEContext> bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
-        final HttpActionAdapter<Object, JEEContext> bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
-        final LogoutLogic<Object, JEEContext> bestLogic = FindBest.logoutLogic(logoutLogic, config, DefaultLogoutLogic.INSTANCE);
+        final SessionStore bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
+        final HttpActionAdapter bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
+        final LogoutLogic bestLogic = FindBest.logoutLogic(logoutLogic, config, DefaultLogoutLogic.INSTANCE);
 
-        final JEEContext context = (JEEContext) FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE)
-                .newContext(request, response, bestSessionStore);
-        bestLogic.perform(context, config, bestAdapter, this.defaultUrl, this.logoutUrlPattern,
-                this.localLogout, this.destroySession, this.centralLogout);
+        final JEEContext context = (JEEContext) FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response, bestSessionStore);
+
+        bestLogic.perform(context, config, bestAdapter, this.defaultUrl, this.logoutUrlPattern, this.localLogout, this.destroySession, this.centralLogout);
     }
 
     public String getDefaultUrl() {
@@ -76,11 +75,11 @@ public class LogoutController {
         this.logoutUrlPattern = logoutUrlPattern;
     }
 
-    public LogoutLogic<Object, JEEContext> getLogoutLogic() {
+    public LogoutLogic getLogoutLogic() {
         return logoutLogic;
     }
 
-    public void setLogoutLogic(final LogoutLogic<Object, JEEContext> logoutLogic) {
+    public void setLogoutLogic(final LogoutLogic logoutLogic) {
         this.logoutLogic = logoutLogic;
     }
 

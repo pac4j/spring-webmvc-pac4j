@@ -1,4 +1,4 @@
-package org.pac4j.springframework.annotation.ws;
+package org.pac4j.springframework.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

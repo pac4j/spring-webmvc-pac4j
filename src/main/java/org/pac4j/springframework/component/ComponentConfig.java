@@ -33,9 +33,9 @@ public class ComponentConfig {
     protected Config config;
 
     @Autowired(required = false)
-    protected SessionStore<JEEContext> sessionStore;
+    protected SessionStore sessionStore;
 
-    protected SessionStore<JEEContext> getSessionStore() {
+    protected SessionStore getSessionStore() {
         return FindBest.sessionStore(sessionStore, config, JEESessionStore.INSTANCE);
     }
 
@@ -48,6 +48,6 @@ public class ComponentConfig {
     @Bean
     @RequestScope
     public ProfileManager getProfileManager() {
-        return new ProfileManager<>(getWebContext());
+        return new ProfileManager(getWebContext());
     }
 }

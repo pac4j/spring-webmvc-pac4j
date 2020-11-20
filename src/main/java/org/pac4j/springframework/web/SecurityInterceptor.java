@@ -12,7 +12,7 @@ import org.pac4j.core.http.adapter.HttpActionAdapter;
 import org.pac4j.core.http.adapter.JEEHttpActionAdapter;
 import org.pac4j.core.matching.matcher.Matcher;
 import org.pac4j.core.util.FindBest;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,24 +20,22 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * <p>This interceptor protects an url.</p>
+ * <p>This interceptor protects an URL.</p>
  *
  * @author Jerome Leleu
  * @since 1.0.0
  */
-public class SecurityInterceptor extends HandlerInterceptorAdapter {
+public class SecurityInterceptor implements HandlerInterceptor {
 
     private static final AtomicInteger internalNumber = new AtomicInteger(1);
 
-    private SecurityLogic<Boolean, JEEContext> securityLogic;
+    private SecurityLogic securityLogic;
 
     private String clients;
 
     private String authorizers;
 
     private String matchers;
-
-    private Boolean multiProfile;
 
     private Config config;
 
@@ -111,24 +109,24 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
-        final SessionStore<JEEContext> bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
-        final HttpActionAdapter<Boolean, JEEContext> bestAdapter = FindBest.httpActionAdapter(httpActionAdapter, config, JEEHttpActionAdapter.INSTANCE);
-        final SecurityLogic<Boolean, JEEContext> bestLogic = FindBest.securityLogic(securityLogic, config, DefaultSecurityLogic.INSTANCE);
+        final SessionStore bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
+        final HttpActionAdapter bestAdapter = FindBest.httpActionAdapter(httpActionAdapter, config, JEEHttpActionAdapter.INSTANCE);
+        final SecurityLogic bestLogic = FindBest.securityLogic(securityLogic, config, DefaultSecurityLogic.INSTANCE);
 
-        final JEEContext context = (JEEContext) FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE)
-                .newContext(request, response, bestSessionStore);
-        final Object result = bestLogic.perform(context, config, (ctx, profiles, parameters) -> true, bestAdapter, clients, authorizers, matchers, multiProfile);
+        final JEEContext context = (JEEContext) FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response, bestSessionStore);
+
+        final Object result = bestLogic.perform(context, config, (ctx, profiles, parameters) -> true, bestAdapter, clients, authorizers, matchers);
         if (result == null) {
             return false;
         }
         return Boolean.parseBoolean(result.toString());
     }
 
-    public SecurityLogic<Boolean, JEEContext> getSecurityLogic() {
+    public SecurityLogic getSecurityLogic() {
         return securityLogic;
     }
 
-    public void setSecurityLogic(final SecurityLogic<Boolean, JEEContext> securityLogic) {
+    public void setSecurityLogic(final SecurityLogic securityLogic) {
         this.securityLogic = securityLogic;
     }
 
@@ -154,14 +152,6 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     public void setMatchers(final String matchers) {
         this.matchers = matchers;
-    }
-
-    public Boolean getMultiProfile() {
-        return multiProfile;
-    }
-
-    public void setMultiProfile(final Boolean multiProfile) {
-        this.multiProfile = multiProfile;
     }
 
     public Config getConfig() {

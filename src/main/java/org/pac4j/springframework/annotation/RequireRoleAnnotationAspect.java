@@ -1,24 +1,27 @@
 package org.pac4j.springframework.annotation;
 
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.pac4j.core.authorization.authorizer.IsAuthenticatedAuthorizer;
 import org.pac4j.core.authorization.authorizer.RequireAllRolesAuthorizer;
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.exception.http.ForbiddenAction;
 import org.pac4j.core.exception.http.UnauthorizedAction;
-import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
+import org.pac4j.core.profile.UserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 /**
- * Common aspect behaviors.
+ * The aspect to define the annotations.
  *
  * @author Jerome Leleu
  * @since 3.2.0
  */
-public class CommonAspect {
+@Aspect
+public class RequireRoleAnnotationAspect {
 
     private static final IsAuthenticatedAuthorizer IS_AUTHENTICATED_AUTHORIZER = new IsAuthenticatedAuthorizer();
 
@@ -28,8 +31,8 @@ public class CommonAspect {
     @Autowired
     private ProfileManager profileManager;
 
-    protected List<CommonProfile> isAuthenticated(final boolean readFromSession) {
-        final List<CommonProfile> profiles = profileManager.getAll(readFromSession);
+    protected List<UserProfile> isAuthenticated() {
+        final List<UserProfile> profiles = profileManager.getProfiles();
 
         if (!IS_AUTHENTICATED_AUTHORIZER.isAuthorized(webContext, profiles)) {
             throw UnauthorizedAction.INSTANCE;
@@ -37,19 +40,21 @@ public class CommonAspect {
         return profiles;
     }
 
-    protected void requireAnyRole(final boolean readFromSession, final String... roles) {
-        final List<CommonProfile> profiles = isAuthenticated(readFromSession);
+    @Before("@annotation(requireAnyRole)")
+    public void beforeRequireAnyRole(final RequireAnyRole requireAnyRole) {
+        final List<UserProfile> profiles = isAuthenticated();
 
-        final RequireAnyRoleAuthorizer<CommonProfile> authorizer = new RequireAnyRoleAuthorizer<>(roles);
+        final RequireAnyRoleAuthorizer authorizer = new RequireAnyRoleAuthorizer(requireAnyRole.value());
         if (!authorizer.isAuthorized(webContext, profiles)) {
             throw ForbiddenAction.INSTANCE;
         }
     }
 
-    protected void requireAllRoles(final boolean readFromSession, final String... roles) {
-        final List<CommonProfile> profiles = isAuthenticated(readFromSession);
+    @Before("@annotation(requireAllRoles)")
+    public void beforeRequireAllRoles(final RequireAllRoles requireAllRoles) {
+        final List<UserProfile> profiles = isAuthenticated();
 
-        final RequireAllRolesAuthorizer<CommonProfile> authorizer = new RequireAllRolesAuthorizer<>(roles);
+        final RequireAllRolesAuthorizer authorizer = new RequireAllRolesAuthorizer(requireAllRoles.value());
         if (!authorizer.isAuthorized(webContext, profiles)) {
             throw ForbiddenAction.INSTANCE;
         }
