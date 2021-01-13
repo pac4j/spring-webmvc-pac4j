@@ -113,9 +113,9 @@ public class SecurityInterceptor implements HandlerInterceptor {
         final HttpActionAdapter bestAdapter = FindBest.httpActionAdapter(httpActionAdapter, config, JEEHttpActionAdapter.INSTANCE);
         final SecurityLogic bestLogic = FindBest.securityLogic(securityLogic, config, DefaultSecurityLogic.INSTANCE);
 
-        final JEEContext context = (JEEContext) FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response, bestSessionStore);
+        final JEEContext context = (JEEContext) FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response);
 
-        final Object result = bestLogic.perform(context, config, (ctx, profiles, parameters) -> true, bestAdapter, clients, authorizers, matchers);
+        final Object result = bestLogic.perform(context, bestSessionStore, config, (ctx, session, profiles, parameters) -> true, bestAdapter, clients, authorizers, matchers);
         if (result == null) {
             return false;
         }

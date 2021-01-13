@@ -6,6 +6,7 @@ import org.pac4j.core.authorization.authorizer.IsAuthenticatedAuthorizer;
 import org.pac4j.core.authorization.authorizer.RequireAllRolesAuthorizer;
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.exception.http.ForbiddenAction;
 import org.pac4j.core.exception.http.UnauthorizedAction;
 import org.pac4j.core.profile.ProfileManager;
@@ -29,12 +30,15 @@ public class RequireRoleAnnotationAspect {
     private JEEContext webContext;
 
     @Autowired
+    private SessionStore sessionStore;
+
+    @Autowired
     private ProfileManager profileManager;
 
     protected List<UserProfile> isAuthenticated() {
         final List<UserProfile> profiles = profileManager.getProfiles();
 
-        if (!IS_AUTHENTICATED_AUTHORIZER.isAuthorized(webContext, profiles)) {
+        if (!IS_AUTHENTICATED_AUTHORIZER.isAuthorized(webContext, sessionStore, profiles)) {
             throw UnauthorizedAction.INSTANCE;
         }
         return profiles;
@@ -45,7 +49,7 @@ public class RequireRoleAnnotationAspect {
         final List<UserProfile> profiles = isAuthenticated();
 
         final RequireAnyRoleAuthorizer authorizer = new RequireAnyRoleAuthorizer(requireAnyRole.value());
-        if (!authorizer.isAuthorized(webContext, profiles)) {
+        if (!authorizer.isAuthorized(webContext, sessionStore, profiles)) {
             throw ForbiddenAction.INSTANCE;
         }
     }
@@ -55,7 +59,7 @@ public class RequireRoleAnnotationAspect {
         final List<UserProfile> profiles = isAuthenticated();
 
         final RequireAllRolesAuthorizer authorizer = new RequireAllRolesAuthorizer(requireAllRoles.value());
-        if (!authorizer.isAuthorized(webContext, profiles)) {
+        if (!authorizer.isAuthorized(webContext, sessionStore, profiles)) {
             throw ForbiddenAction.INSTANCE;
         }
     }

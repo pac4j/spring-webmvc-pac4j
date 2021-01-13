@@ -49,9 +49,9 @@ public class CallbackController {
         final HttpActionAdapter bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
         final CallbackLogic bestLogic = FindBest.callbackLogic(callbackLogic, config, DefaultCallbackLogic.INSTANCE);
 
-        final JEEContext context = (JEEContext) FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response, bestSessionStore);
+        final JEEContext context = (JEEContext) FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response);
 
-        bestLogic.perform(context, config, bestAdapter, this.defaultUrl, this.renewSession, this.defaultClient);
+        bestLogic.perform(context, bestSessionStore, config, bestAdapter, this.defaultUrl, this.renewSession, this.defaultClient);
     }
 
     @RequestMapping("${pac4j.callback.path/{cn}:/callback/{cn}}")

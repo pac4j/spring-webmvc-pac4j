@@ -32,22 +32,21 @@ public class ComponentConfig {
     @Autowired(required = false)
     protected Config config;
 
-    @Autowired(required = false)
-    protected SessionStore sessionStore;
-
-    protected SessionStore getSessionStore() {
-        return FindBest.sessionStore(sessionStore, config, JEESessionStore.INSTANCE);
+    @Bean
+    @RequestScope
+    public SessionStore getSessionStore() {
+        return FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
     }
 
     @Bean
     @RequestScope
     public JEEContext getWebContext() {
-        return new JEEContext(request, response, getSessionStore());
+        return new JEEContext(request, response);
     }
 
     @Bean
     @RequestScope
     public ProfileManager getProfileManager() {
-        return new ProfileManager(getWebContext());
+        return new ProfileManager(getWebContext(), getSessionStore());
     }
 }
