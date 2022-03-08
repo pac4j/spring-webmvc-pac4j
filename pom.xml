@@ -58,7 +58,7 @@
         <spring.version>5.3.15</spring.version>
         <aspectj.version>1.9.8</aspectj.version>
         <java.version>11</java.version>
-        <pmdVersion>6.41.0</pmdVersion>
+        <pmdVersion>6.43.0</pmdVersion>
     </properties>
 
     <dependencies>
