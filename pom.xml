@@ -54,7 +54,7 @@
 
     <properties>
         <javax.servlet>4.0.1</javax.servlet>
-        <pac4j.version>5.4.4</pac4j.version>
+        <pac4j.version>5.4.5</pac4j.version>
         <spring.version>5.3.22</spring.version>
         <aspectj.version>1.9.9.1</aspectj.version>
         <java.version>11</java.version>
