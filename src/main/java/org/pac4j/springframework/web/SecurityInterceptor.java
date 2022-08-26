@@ -1,13 +1,13 @@
 package org.pac4j.springframework.web;
 
-import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.SecurityLogic;
 import org.pac4j.core.http.adapter.HttpActionAdapter;
-import org.pac4j.core.matching.matcher.Matcher;
 import org.pac4j.core.util.FindBest;
+import org.pac4j.core.util.security.SecurityEndpoint;
+import org.pac4j.core.util.security.SecurityEndpointBuilder;
 import org.pac4j.jee.context.JEEContext;
 import org.pac4j.jee.context.JEEContextFactory;
 import org.pac4j.jee.context.session.JEESessionStore;
@@ -17,17 +17,13 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * <p>This interceptor protects an URL.</p>
  *
  * @author Jerome Leleu
  * @since 1.0.0
  */
-public class SecurityInterceptor implements HandlerInterceptor {
-
-    private static final AtomicInteger internalNumber = new AtomicInteger(1);
+public class SecurityInterceptor implements HandlerInterceptor, SecurityEndpoint {
 
     private SecurityLogic securityLogic;
 
@@ -41,69 +37,9 @@ public class SecurityInterceptor implements HandlerInterceptor {
 
     private HttpActionAdapter httpActionAdapter;
 
-    public SecurityInterceptor(final Config config) {
+    public SecurityInterceptor(final Config config, Object... parameters) {
         this.config = config;
-    }
-
-    public SecurityInterceptor(final Config config, final String clients) {
-        this(config);
-        this.clients = clients;
-    }
-
-    public SecurityInterceptor(final Config config, final String clients, final HttpActionAdapter httpActionAdapter) {
-        this.clients = clients;
-        this.config = config;
-        this.httpActionAdapter = httpActionAdapter;
-    }
-
-    public SecurityInterceptor(final Config config, final String clients, final String authorizers) {
-        this(config, clients);
-        this.authorizers = authorizers;
-    }
-
-    public SecurityInterceptor(final Config config, final String clients, final Authorizer[] authorizers) {
-        this(config, clients);
-        this.authorizers = addAuthorizers(config, authorizers);
-    }
-
-    public SecurityInterceptor(final Config config, final String clients, final String authorizers, final String matchers) {
-        this(config, clients, authorizers);
-        this.matchers = matchers;
-    }
-
-    public SecurityInterceptor(final Config config, final String clients, final Authorizer[] authorizers, final Matcher[] matchers) {
-        this(config, clients, addAuthorizers(config, authorizers));
-        this.matchers = addMatchers(config, matchers);
-    }
-
-    private static String addAuthorizers(final Config config, final Authorizer[] authorizers) {
-        final int n = internalNumber.getAndAdd(1);
-        final int nbAuthorizers = authorizers.length;
-        final StringBuilder names = new StringBuilder("");
-        for (int i = 0; i < nbAuthorizers; i++) {
-            final String name = "$int_authorizer" + n + "." + i;
-            config.addAuthorizer(name, authorizers[i]);
-            if (i > 0) {
-                names.append(",");
-            }
-            names.append(name);
-        }
-        return names.toString();
-    }
-
-    private static String addMatchers(final Config config, final Matcher[] matchers) {
-        final int n = internalNumber.getAndAdd(1);
-        final int nbMatchers = matchers.length;
-        final StringBuilder names = new StringBuilder("");
-        for (int i = 0; i < nbMatchers; i++) {
-            final String name = "$int_matcher" + n + "." + i;
-            config.addMatcher(name, matchers[i]);
-            if (i > 0) {
-                names.append(",");
-            }
-            names.append(name);
-        }
-        return names.toString();
+        SecurityEndpointBuilder.buildConfig(this, config, parameters);
     }
 
     @Override
@@ -126,6 +62,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         return securityLogic;
     }
 
+    @Override
     public void setSecurityLogic(final SecurityLogic securityLogic) {
         this.securityLogic = securityLogic;
     }
@@ -134,6 +71,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         return clients;
     }
 
+    @Override
     public void setClients(final String clients) {
         this.clients = clients;
     }
@@ -142,6 +80,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         return authorizers;
     }
 
+    @Override
     public void setAuthorizers(final String authorizers) {
         this.authorizers = authorizers;
     }
@@ -150,6 +89,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         return matchers;
     }
 
+    @Override
     public void setMatchers(final String matchers) {
         this.matchers = matchers;
     }
@@ -166,6 +106,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         return httpActionAdapter;
     }
 
+    @Override
     public void setHttpActionAdapter(final HttpActionAdapter httpActionAdapter) {
         this.httpActionAdapter = httpActionAdapter;
     }
