@@ -8,7 +8,7 @@ import org.pac4j.core.http.adapter.HttpActionAdapter;
 import org.pac4j.core.util.FindBest;
 import org.pac4j.jee.context.JEEContext;
 import org.pac4j.jee.context.JEEContextFactory;
-import org.pac4j.jee.context.session.JEESessionStore;
+import org.pac4j.jee.context.session.JEESessionStoreFactory;
 import org.pac4j.jee.http.adapter.JEEHttpActionAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,13 +50,13 @@ public class LogoutController {
     @RequestMapping("${pac4j.logout.path:/logout}")
     public void logout(final HttpServletRequest request, final HttpServletResponse response) {
 
-        final SessionStore bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
         final HttpActionAdapter bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
         final LogoutLogic bestLogic = FindBest.logoutLogic(logoutLogic, config, DefaultLogoutLogic.INSTANCE);
 
         final JEEContext context = (JEEContext) FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response);
+        final SessionStore sessionStore = FindBest.sessionStoreFactory(null, config, JEESessionStoreFactory.INSTANCE).newSessionStore(request, response);
 
-        bestLogic.perform(context, bestSessionStore, config, bestAdapter, this.defaultUrl, this.logoutUrlPattern, this.localLogout, this.destroySession, this.centralLogout);
+        bestLogic.perform(context, sessionStore, config, bestAdapter, this.defaultUrl, this.logoutUrlPattern, this.localLogout, this.destroySession, this.centralLogout);
     }
 
     public String getDefaultUrl() {

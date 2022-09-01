@@ -8,7 +8,7 @@ import org.pac4j.core.http.adapter.HttpActionAdapter;
 import org.pac4j.core.util.FindBest;
 import org.pac4j.jee.context.JEEContext;
 import org.pac4j.jee.context.JEEContextFactory;
-import org.pac4j.jee.context.session.JEESessionStore;
+import org.pac4j.jee.context.session.JEESessionStoreFactory;
 import org.pac4j.jee.http.adapter.JEEHttpActionAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,13 +45,13 @@ public class CallbackController {
     @RequestMapping("${pac4j.callback.path:/callback}")
     public void callback(final HttpServletRequest request, final HttpServletResponse response) {
 
-        final SessionStore bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
         final HttpActionAdapter bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
         final CallbackLogic bestLogic = FindBest.callbackLogic(callbackLogic, config, DefaultCallbackLogic.INSTANCE);
 
         final JEEContext context = (JEEContext) FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response);
+        final SessionStore sessionStore = FindBest.sessionStoreFactory(null, config, JEESessionStoreFactory.INSTANCE).newSessionStore(request, response);
 
-        bestLogic.perform(context, bestSessionStore, config, bestAdapter, this.defaultUrl, this.renewSession, this.defaultClient);
+        bestLogic.perform(context, sessionStore, config, bestAdapter, this.defaultUrl, this.renewSession, this.defaultClient);
     }
 
     @RequestMapping("${pac4j.callback.path/{cn}:/callback/{cn}}")
