@@ -12,7 +12,7 @@
     <artifactId>spring-webmvc-pac4j</artifactId>
     <packaging>jar</packaging>
     <name>Spring Web MVC security framework based on pac4j</name>
-    <version>6.1.1-SNAPSHOT</version>
+    <version>7.0.0-SNAPSHOT</version>
     <description>Security library for Spring Web MVC based on pac4j</description>
     <url>https://github.com/pac4j/spring-webmvc-pac4j</url>
 
@@ -27,6 +27,11 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestone</id>
+            <name>Spring Milestone Repository</name>
+            <url>https://repo.spring.io/milestone</url>
         </repository>
     </repositories>
 
@@ -53,19 +58,19 @@
     </developers>
 
     <properties>
-        <javax.servlet>4.0.1</javax.servlet>
+        <jakartaee-web-api.version>9.1.0</jakartaee-web-api.version>
         <pac4j.version>5.5.0</pac4j.version>
-        <spring.version>5.3.22</spring.version>
+        <spring.version>6.0.0-M1</spring.version>
         <aspectj.version>1.9.9.1</aspectj.version>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <pmdVersion>6.49.0</pmdVersion>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${javax.servlet}</version>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-web-api</artifactId>
+            <version>${jakartaee-web-api.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -90,7 +95,7 @@
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
-            <artifactId>pac4j-javaee</artifactId>
+            <artifactId>pac4j-jakartaee</artifactId>
             <version>${pac4j.version}</version>
         </dependency>
     </dependencies>
