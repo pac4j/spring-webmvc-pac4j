@@ -2,7 +2,6 @@ package org.pac4j.springframework.web;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.engine.DefaultSecurityLogic;
@@ -16,8 +15,6 @@ import org.pac4j.jee.context.JEEContextFactory;
 import org.pac4j.jee.context.session.JEESessionStoreFactory;
 import org.pac4j.jee.http.adapter.JEEHttpActionAdapter;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import java.util.regex.Matcher;
 
 /**
  * <p>This interceptor protects an URL.</p>
@@ -39,6 +36,8 @@ public class SecurityInterceptor implements HandlerInterceptor, SecurityEndpoint
 
     private HttpActionAdapter httpActionAdapter;
 
+    public SecurityInterceptor() {}
+
     public SecurityInterceptor(final Config config) {
         this.config = config;
     }
@@ -48,22 +47,9 @@ public class SecurityInterceptor implements HandlerInterceptor, SecurityEndpoint
         this.clients = clients;
     }
 
-    @Deprecated
-    public SecurityInterceptor(final Config config, final String clients, final HttpActionAdapter httpActionAdapter) {
-        this.clients = clients;
-        this.config = config;
-        this.httpActionAdapter = httpActionAdapter;
-    }
-
     public SecurityInterceptor(final Config config, final String clients, final String authorizers) {
         this(config, clients);
         this.authorizers = authorizers;
-    }
-
-    @Deprecated
-    public SecurityInterceptor(final Config config, final String clients, final Authorizer[] authorizers) {
-        this(config);
-        SecurityEndpointBuilder.buildConfig(this, config, clients, authorizers);
     }
 
     public SecurityInterceptor(final Config config, final String clients, final String authorizers, final String matchers) {
@@ -71,15 +57,9 @@ public class SecurityInterceptor implements HandlerInterceptor, SecurityEndpoint
         this.matchers = matchers;
     }
 
-    @Deprecated
-    public SecurityInterceptor(final Config config, final String clients, final Authorizer[] authorizers, final Matcher[] matchers) {
-        this(config);
-        SecurityEndpointBuilder.buildConfig(this, config, clients, authorizers, matchers);
-    }
-
-    public static SecurityInterceptor build(final Config config, Object... parameters) {
-        final SecurityInterceptor securityInterceptor = new SecurityInterceptor(config);
-        SecurityEndpointBuilder.buildConfig(securityInterceptor, config, parameters);
+    public static SecurityInterceptor build(Object... parameters) {
+        final SecurityInterceptor securityInterceptor = new SecurityInterceptor();
+        SecurityEndpointBuilder.buildConfig(securityInterceptor, parameters);
         return securityInterceptor;
     }
 
@@ -139,6 +119,7 @@ public class SecurityInterceptor implements HandlerInterceptor, SecurityEndpoint
         return config;
     }
 
+    @Override
     public void setConfig(final Config config) {
         this.config = config;
     }
