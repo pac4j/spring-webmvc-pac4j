@@ -39,6 +39,8 @@ public class SecurityInterceptor implements HandlerInterceptor, SecurityEndpoint
 
     private HttpActionAdapter httpActionAdapter;
 
+    public SecurityInterceptor() {}
+
     public SecurityInterceptor(final Config config) {
         this.config = config;
     }
@@ -77,9 +79,9 @@ public class SecurityInterceptor implements HandlerInterceptor, SecurityEndpoint
         SecurityEndpointBuilder.buildConfig(this, config, clients, authorizers, matchers);
     }
 
-    public static SecurityInterceptor build(final Config config, Object... parameters) {
-        final SecurityInterceptor securityInterceptor = new SecurityInterceptor(config);
-        SecurityEndpointBuilder.buildConfig(securityInterceptor, config, parameters);
+    public static SecurityInterceptor build(Object... parameters) {
+        final SecurityInterceptor securityInterceptor = new SecurityInterceptor();
+        SecurityEndpointBuilder.buildConfig(securityInterceptor, parameters);
         return securityInterceptor;
     }
 
@@ -139,6 +141,7 @@ public class SecurityInterceptor implements HandlerInterceptor, SecurityEndpoint
         return config;
     }
 
+    @Override
     public void setConfig(final Config config) {
         this.config = config;
     }
