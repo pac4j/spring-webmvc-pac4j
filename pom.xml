@@ -63,7 +63,7 @@
         <spring.version>6.0.0-M6</spring.version>
         <aspectj.version>1.9.9.1</aspectj.version>
         <java.version>17</java.version>
-        <pmdVersion>6.49.0</pmdVersion>
+        <pmdVersion>6.50.0</pmdVersion>
     </properties>
 
     <dependencies>
