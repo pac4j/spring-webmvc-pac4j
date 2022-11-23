@@ -46,6 +46,12 @@ public class LogoutController {
     @Autowired
     private Config config;
 
+    /**
+     * Handle the logout process.
+     *
+     * @param request the HTTP request
+     * @param response the HTTP response
+     */
     @RequestMapping("${pac4j.logout.path:/logout}")
     public void logout(final HttpServletRequest request, final HttpServletResponse response) {
 
@@ -58,58 +64,128 @@ public class LogoutController {
         bestLogic.perform(context, sessionStore, config, bestAdapter, this.defaultUrl, this.logoutUrlPattern, this.localLogout, this.destroySession, this.centralLogout);
     }
 
+    /**
+     * Get the default URL.
+     *
+     * @return the default URL
+     */
     public String getDefaultUrl() {
-        return this.defaultUrl;
+        return defaultUrl;
     }
 
+    /**
+     * Set the default URL.
+     *
+     * @param defaultUrl the default URL
+     */
     public void setDefaultUrl(final String defaultUrl) {
         this.defaultUrl = defaultUrl;
     }
 
+    /**
+     * Get the logout URL pattern.
+     *
+     * @return the logout URL pattern
+     */
     public String getLogoutUrlPattern() {
         return logoutUrlPattern;
     }
 
+    /**
+     * Set the logout URL pattern.
+     *
+     * @param logoutUrlPattern the logout URL pattern
+     */
     public void setLogoutUrlPattern(final String logoutUrlPattern) {
         this.logoutUrlPattern = logoutUrlPattern;
     }
 
+    /**
+     * Get the specific logout logic.
+     *
+     * @return the logout logic
+     */
     public LogoutLogic getLogoutLogic() {
         return logoutLogic;
     }
 
+    /**
+     * Set the specific logout logic.
+     *
+     * @param logoutLogic the logout logic
+     */
     public void setLogoutLogic(final LogoutLogic logoutLogic) {
         this.logoutLogic = logoutLogic;
     }
 
+    /**
+     * Get the security config.
+     *
+     * @return the config
+     */
     public Config getConfig() {
         return config;
     }
 
+    /**
+     * Define the security config.
+     *
+     * @param config the config
+     */
     public void setConfig(final Config config) {
         this.config = config;
     }
 
+    /**
+     * Get whether it is a local logout.
+     *
+     * @return whether it is a local logout
+     */
     public Boolean getLocalLogout() {
         return localLogout;
     }
 
+    /**
+     * Define whether it is a local logout.
+     *
+     * @param localLogout whether it is a local logout
+     */
     public void setLocalLogout(final Boolean localLogout) {
         this.localLogout = localLogout;
     }
 
+    /**
+     * Get whether it is a central logout.
+     *
+     * @return whether it is a central logout
+     */
     public Boolean getCentralLogout() {
         return centralLogout;
     }
 
+    /**
+     * Define whether it is a central logout.
+     *
+     * @param centralLogout whether it is a central logout
+     */
     public void setCentralLogout(final Boolean centralLogout) {
         this.centralLogout = centralLogout;
     }
 
+    /**
+     * Get whether the session shoudl be destroyed at logout.
+     *
+     * @return whether the session shoudl be destroyed
+     */
     public Boolean getDestroySession() {
         return destroySession;
     }
 
+    /**
+     * Define whether the session shoudl be destroyed at logout.
+     *
+     * @param destroySession whether the session shoudl be destroyed
+     */
     public void setDestroySession(final Boolean destroySession) {
         this.destroySession = destroySession;
     }

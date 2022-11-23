@@ -14,6 +14,11 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy
 public class AnnotationConfig {
 
+    /**
+     * Role aspect configuration.
+     *
+     * @return the aspect
+     */
     @Bean
     public RequireRoleAnnotationAspect requireRoleAnnotationAspect() {
         return new RequireRoleAnnotationAspect();

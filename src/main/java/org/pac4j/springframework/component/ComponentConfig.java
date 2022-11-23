@@ -22,27 +22,51 @@ import org.springframework.web.context.annotation.RequestScope;
 @Configuration
 public class ComponentConfig {
 
+    /**
+     * The HTTP request.
+     */
     @Autowired
     protected HttpServletRequest request;
 
+    /**
+     * The HTTP response.
+     */
     @Autowired
     protected HttpServletResponse response;
 
+    /**
+     * The security config.
+     */
     @Autowired(required = false)
     protected Config config;
 
+    /**
+     * Retrieve the current session store.
+     *
+     * @return the session store
+     */
     @Bean
     @RequestScope
     public SessionStore getSessionStore() {
         return FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
     }
 
+    /**
+     * Retrieve the current web context.
+     *
+     * @return the web context
+     */
     @Bean
     @RequestScope
     public JEEContext getWebContext() {
         return new JEEContext(request, response);
     }
 
+    /**
+     * Retrieve the current profile manager.
+     *
+     * @return the profile manager
+     */
     @Bean
     @RequestScope
     public ProfileManager getProfileManager() {

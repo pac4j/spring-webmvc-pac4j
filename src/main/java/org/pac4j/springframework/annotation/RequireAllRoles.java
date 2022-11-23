@@ -15,5 +15,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequireAllRoles {
 
+    /**
+     * The roles to check.
+     *
+     * @return the roles
+     */
     String[] value() default {};
 }

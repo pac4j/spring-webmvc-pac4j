@@ -41,6 +41,12 @@ public class CallbackController {
     @Autowired
     private Config config;
 
+    /**
+     * Handle the callback.
+     *
+     * @param request the HTTP request
+     * @param response the HTTP response
+     */
     @RequestMapping("${pac4j.callback.path:/callback}")
     public void callback(final HttpServletRequest request, final HttpServletResponse response) {
 
@@ -53,48 +59,105 @@ public class CallbackController {
         bestLogic.perform(context, sessionStore, config, bestAdapter, this.defaultUrl, this.renewSession, this.defaultClient);
     }
 
+    /**
+     * Handle the callback (client name in path).
+     *
+     * @param request the HTTP request
+     * @param response the HTTP response
+     * @param cn the client name
+     */
     @RequestMapping("${pac4j.callback.path/{cn}:/callback/{cn}}")
     public void callbackWithClientName(final HttpServletRequest request, final HttpServletResponse response, @PathVariable("cn") final String cn) {
 
         callback(request, response);
     }
 
+    /**
+     * Get the default URL.
+     *
+     * @return the default URL
+     */
     public String getDefaultUrl() {
         return defaultUrl;
     }
 
+    /**
+     * Set the default URL.
+     *
+     * @param defaultUrl the default URL
+     */
     public void setDefaultUrl(final String defaultUrl) {
         this.defaultUrl = defaultUrl;
     }
 
+    /**
+     * Get the specific callback logic.
+     *
+     * @return the callback logic.
+     */
     public CallbackLogic getCallbackLogic() {
         return callbackLogic;
     }
 
+    /**
+     * Set the specific callback logic.
+     *
+     * @param callbackLogic the callback logic
+     */
     public void setCallbackLogic(final CallbackLogic callbackLogic) {
         this.callbackLogic = callbackLogic;
     }
 
+    /**
+     * Indicate whether the session should be renewed.
+     *
+     * @return whether the session should be renewed
+     */
     public Boolean getRenewSession() {
         return renewSession;
     }
 
+    /**
+     * Define whether the session should be renewed.
+     *
+     * @param renewSession whether the session should be renewed
+     */
     public void setRenewSession(final Boolean renewSession) {
         this.renewSession = renewSession;
     }
 
+    /**
+     * Get the default client.
+     *
+     * @return the default client
+     */
     public String getDefaultClient() {
         return defaultClient;
     }
 
+    /**
+     * Define the default client (in case, none is requested on the callback URL).
+     *
+     * @param client the default client
+     */
     public void setDefaultClient(final String client) {
         this.defaultClient = client;
     }
 
+    /**
+     * Get the security config.
+     *
+     * @return the config
+     */
     public Config getConfig() {
         return config;
     }
 
+    /**
+     * Define the security config.
+     *
+     * @param config the config
+     */
     public void setConfig(final Config config) {
         this.config = config;
     }

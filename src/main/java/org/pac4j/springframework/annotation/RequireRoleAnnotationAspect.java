@@ -35,6 +35,11 @@ public class RequireRoleAnnotationAspect {
     @Autowired
     private ProfileManager profileManager;
 
+    /**
+     * Check if the user is authenticated and return its profiles if so.
+     *
+     * @return the user profiles
+     */
     protected List<UserProfile> isAuthenticated() {
         final List<UserProfile> profiles = profileManager.getProfiles();
 
@@ -44,6 +49,11 @@ public class RequireRoleAnnotationAspect {
         return profiles;
     }
 
+    /**
+     * Check whether the user has one of the roles.
+     *
+     * @param requireAnyRole the roles config
+     */
     @Before("@annotation(requireAnyRole)")
     public void beforeRequireAnyRole(final RequireAnyRole requireAnyRole) {
         final List<UserProfile> profiles = isAuthenticated();
@@ -54,6 +64,11 @@ public class RequireRoleAnnotationAspect {
         }
     }
 
+    /**
+     * Check whether the user has all the roles.
+     *
+     * @param requireAllRoles the roles config
+     */
     @Before("@annotation(requireAllRoles)")
     public void beforeRequireAllRoles(final RequireAllRoles requireAllRoles) {
         final List<UserProfile> profiles = isAuthenticated();
