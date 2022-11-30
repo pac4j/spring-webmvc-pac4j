@@ -1,5 +1,6 @@
 package org.pac4j.springframework.annotation;
 
+import lombok.val;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.pac4j.core.authorization.authorizer.IsAuthenticatedAuthorizer;
@@ -41,10 +42,10 @@ public class RequireRoleAnnotationAspect {
      * @return the user profiles
      */
     protected List<UserProfile> isAuthenticated() {
-        final List<UserProfile> profiles = profileManager.getProfiles();
+        val profiles = profileManager.getProfiles();
 
         if (!IS_AUTHENTICATED_AUTHORIZER.isAuthorized(webContext, sessionStore, profiles)) {
-            throw UnauthorizedAction.INSTANCE;
+            throw new UnauthorizedAction();
         }
         return profiles;
     }
@@ -56,11 +57,11 @@ public class RequireRoleAnnotationAspect {
      */
     @Before("@annotation(requireAnyRole)")
     public void beforeRequireAnyRole(final RequireAnyRole requireAnyRole) {
-        final List<UserProfile> profiles = isAuthenticated();
+        val profiles = isAuthenticated();
 
         final RequireAnyRoleAuthorizer authorizer = new RequireAnyRoleAuthorizer(requireAnyRole.value());
         if (!authorizer.isAuthorized(webContext, sessionStore, profiles)) {
-            throw ForbiddenAction.INSTANCE;
+            throw new ForbiddenAction();
         }
     }
 
@@ -71,11 +72,11 @@ public class RequireRoleAnnotationAspect {
      */
     @Before("@annotation(requireAllRoles)")
     public void beforeRequireAllRoles(final RequireAllRoles requireAllRoles) {
-        final List<UserProfile> profiles = isAuthenticated();
+        val profiles = isAuthenticated();
 
-        final RequireAllRolesAuthorizer authorizer = new RequireAllRolesAuthorizer(requireAllRoles.value());
+        val authorizer = new RequireAllRolesAuthorizer(requireAllRoles.value());
         if (!authorizer.isAuthorized(webContext, sessionStore, profiles)) {
-            throw ForbiddenAction.INSTANCE;
+            throw new ForbiddenAction();
         }
     }
 }
