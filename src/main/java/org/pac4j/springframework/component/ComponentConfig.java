@@ -5,9 +5,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.profile.ProfileManager;
-import org.pac4j.core.util.FindBest;
+import org.pac4j.jee.config.Pac4jJEEConfig;
 import org.pac4j.jee.context.JEEContext;
-import org.pac4j.jee.context.session.JEESessionStoreFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,7 +47,9 @@ public class ComponentConfig {
     @Bean
     @RequestScope
     public SessionStore getSessionStore() {
-        return FindBest.sessionStoreFactory(null, config, JEESessionStoreFactory.INSTANCE).newSessionStore(request, response);
+        Pac4jJEEConfig.configureDefaults(config);
+
+        return config.getSessionStoreFactory().newSessionStore(request, response);
     }
 
     /**
@@ -59,6 +60,8 @@ public class ComponentConfig {
     @Bean
     @RequestScope
     public JEEContext getWebContext() {
+        Pac4jJEEConfig.configureDefaults(config);
+
         return new JEEContext(request, response);
     }
 
@@ -70,6 +73,6 @@ public class ComponentConfig {
     @Bean
     @RequestScope
     public ProfileManager getProfileManager() {
-        return new ProfileManager(getWebContext(), getSessionStore());
+        return config.getProfileManagerFactory().apply(getWebContext(), getSessionStore());
     }
 }

@@ -6,16 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.engine.DefaultSecurityLogic;
-import org.pac4j.core.engine.SecurityLogic;
-import org.pac4j.core.http.adapter.HttpActionAdapter;
-import org.pac4j.core.profile.factory.ProfileManagerFactory;
-import org.pac4j.core.util.FindBest;
 import org.pac4j.core.util.security.SecurityEndpoint;
 import org.pac4j.core.util.security.SecurityEndpointBuilder;
-import org.pac4j.jee.context.JEEContextFactory;
-import org.pac4j.jee.context.session.JEESessionStoreFactory;
-import org.pac4j.jee.http.adapter.JEEHttpActionAdapter;
+import org.pac4j.jee.config.Pac4jJEEConfig;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
@@ -28,8 +21,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Setter
 public class SecurityInterceptor implements HandlerInterceptor, SecurityEndpoint {
 
-    private SecurityLogic securityLogic;
-
     private String clients;
 
     private String authorizers;
@@ -37,8 +28,6 @@ public class SecurityInterceptor implements HandlerInterceptor, SecurityEndpoint
     private String matchers;
 
     private Config config;
-
-    private HttpActionAdapter httpActionAdapter;
 
     /**
      * Empty constructor.
@@ -98,7 +87,7 @@ public class SecurityInterceptor implements HandlerInterceptor, SecurityEndpoint
      * @return the defined security interceptor
      */
     public static SecurityInterceptor build(Object... parameters) {
-        final SecurityInterceptor securityInterceptor = new SecurityInterceptor();
+        val securityInterceptor = new SecurityInterceptor();
         SecurityEndpointBuilder.buildConfig(securityInterceptor, parameters);
         return securityInterceptor;
     }
@@ -106,14 +95,10 @@ public class SecurityInterceptor implements HandlerInterceptor, SecurityEndpoint
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
-        val logic = FindBest.securityLogic(securityLogic, config, DefaultSecurityLogic.INSTANCE);
-        val context = FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response);
-        val sessionStore = FindBest.sessionStoreFactory(null, config, JEESessionStoreFactory.INSTANCE).newSessionStore(request, response);
-        val profileManagerFactory = FindBest.profileManagerFactory(null, config, ProfileManagerFactory.DEFAULT);
-        val adapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
+        Pac4jJEEConfig.configureDefaults(config);
 
-        final Object result = logic.perform(context, sessionStore, profileManagerFactory, config,
-                (ctx, session, profiles, parameters) -> true, adapter, clients, authorizers, matchers);
+        val result = config.getSecurityLogic().perform(config, (ctx, session, profiles, parameters) -> true,
+                clients, authorizers, matchers, request, response);
         if (result == null) {
             return false;
         }

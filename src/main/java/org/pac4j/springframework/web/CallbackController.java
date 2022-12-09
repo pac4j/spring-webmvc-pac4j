@@ -4,15 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.val;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.engine.CallbackLogic;
-import org.pac4j.core.engine.DefaultCallbackLogic;
-import org.pac4j.core.profile.factory.ProfileManagerFactory;
-import org.pac4j.core.util.FindBest;
-import org.pac4j.jee.context.JEEContextFactory;
-import org.pac4j.jee.context.session.JEESessionStoreFactory;
-import org.pac4j.jee.http.adapter.JEEHttpActionAdapter;
+import org.pac4j.jee.config.Pac4jJEEConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -29,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Getter
 @Setter
 public class CallbackController {
-
-    private CallbackLogic callbackLogic;
 
     @Value("${pac4j.callback.defaultUrl:#{null}}")
     private String defaultUrl;
@@ -53,13 +44,9 @@ public class CallbackController {
     @RequestMapping("${pac4j.callback.path:/callback}")
     public void callback(final HttpServletRequest request, final HttpServletResponse response) {
 
-        val logic = FindBest.callbackLogic(callbackLogic, config, DefaultCallbackLogic.INSTANCE);
-        val context = FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response);
-        val sessionStore = FindBest.sessionStoreFactory(null, config, JEESessionStoreFactory.INSTANCE).newSessionStore(request, response);
-        val profileManagerFactory = FindBest.profileManagerFactory(null, config, ProfileManagerFactory.DEFAULT);
-        val adapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
+        Pac4jJEEConfig.configureDefaults(config);
 
-        logic.perform(context, sessionStore, profileManagerFactory, config, adapter, this.defaultUrl, this.renewSession, this.defaultClient);
+        config.getCallbackLogic().perform(config, defaultUrl, renewSession, defaultClient, request, response);
     }
 
     /**
