@@ -47,7 +47,7 @@ public class ComponentConfig {
     @Bean
     @RequestScope
     public SessionStore getSessionStore() {
-        Pac4jJEEConfig.configureDefaults(config);
+        Pac4jJEEConfig.applyJEESettingsIfUndefined(config);
 
         return config.getSessionStoreFactory().newSessionStore(request, response);
     }
@@ -60,7 +60,7 @@ public class ComponentConfig {
     @Bean
     @RequestScope
     public JEEContext getWebContext() {
-        Pac4jJEEConfig.configureDefaults(config);
+        Pac4jJEEConfig.applyJEESettingsIfUndefined(config);
 
         return new JEEContext(request, response);
     }

@@ -49,7 +49,7 @@ public class LogoutController {
     @RequestMapping("${pac4j.logout.path:/logout}")
     public void logout(final HttpServletRequest request, final HttpServletResponse response) {
 
-        Pac4jJEEConfig.configureDefaults(config);
+        Pac4jJEEConfig.applyJEESettingsIfUndefined(config);
 
         config.getLogoutLogic().perform(config, defaultUrl, logoutUrlPattern, localLogout, destroySession, centralLogout, request, response);
     }

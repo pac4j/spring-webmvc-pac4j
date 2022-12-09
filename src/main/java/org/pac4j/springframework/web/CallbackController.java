@@ -44,7 +44,7 @@ public class CallbackController {
     @RequestMapping("${pac4j.callback.path:/callback}")
     public void callback(final HttpServletRequest request, final HttpServletResponse response) {
 
-        Pac4jJEEConfig.configureDefaults(config);
+        Pac4jJEEConfig.applyJEESettingsIfUndefined(config);
 
         config.getCallbackLogic().perform(config, defaultUrl, renewSession, defaultClient, request, response);
     }

@@ -95,7 +95,7 @@ public class SecurityInterceptor implements HandlerInterceptor, SecurityEndpoint
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
-        Pac4jJEEConfig.configureDefaults(config);
+        Pac4jJEEConfig.applyJEESettingsIfUndefined(config);
 
         val result = config.getSecurityLogic().perform(config, (ctx, session, profiles, parameters) -> true,
                 clients, authorizers, matchers, request, response);
