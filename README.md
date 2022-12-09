@@ -68,3 +68,4 @@ See the [migration guide](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Migr
 ## Need help?
 
 You can use the [mailing lists](https://www.pac4j.org/mailing-lists.html) or the [commercial support](https://www.pac4j.org/commercial-support.html).
+
