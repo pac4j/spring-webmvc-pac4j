@@ -9,6 +9,7 @@ import org.pac4j.core.config.Config;
 import org.pac4j.core.util.security.SecurityEndpoint;
 import org.pac4j.core.util.security.SecurityEndpointBuilder;
 import org.pac4j.jee.config.Pac4jJEEConfig;
+import org.pac4j.jee.context.JEEFrameworkParameters;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
@@ -98,7 +99,7 @@ public class SecurityInterceptor implements HandlerInterceptor, SecurityEndpoint
         Pac4jJEEConfig.applyJEESettingsIfUndefined(config);
 
         val result = config.getSecurityLogic().perform(config, (ctx, session, profiles, parameters) -> true,
-                clients, authorizers, matchers, request, response);
+                clients, authorizers, matchers, new JEEFrameworkParameters(request, response));
         if (result == null) {
             return false;
         }

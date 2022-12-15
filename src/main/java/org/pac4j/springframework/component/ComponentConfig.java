@@ -7,6 +7,7 @@ import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.jee.config.Pac4jJEEConfig;
 import org.pac4j.jee.context.JEEContext;
+import org.pac4j.jee.context.JEEFrameworkParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,7 +50,7 @@ public class ComponentConfig {
     public SessionStore getSessionStore() {
         Pac4jJEEConfig.applyJEESettingsIfUndefined(config);
 
-        return config.getSessionStoreFactory().newSessionStore(request, response);
+        return config.getSessionStoreFactory().newSessionStore(new JEEFrameworkParameters(request, response));
     }
 
     /**

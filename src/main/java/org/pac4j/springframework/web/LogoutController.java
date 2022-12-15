@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.pac4j.core.config.Config;
 import org.pac4j.jee.config.Pac4jJEEConfig;
+import org.pac4j.jee.context.JEEFrameworkParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -51,6 +52,6 @@ public class LogoutController {
 
         Pac4jJEEConfig.applyJEESettingsIfUndefined(config);
 
-        config.getLogoutLogic().perform(config, defaultUrl, logoutUrlPattern, localLogout, destroySession, centralLogout, request, response);
+        config.getLogoutLogic().perform(config, defaultUrl, logoutUrlPattern, localLogout, destroySession, centralLogout, new JEEFrameworkParameters(request, response));
     }
 }

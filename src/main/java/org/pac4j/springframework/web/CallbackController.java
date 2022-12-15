@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.pac4j.core.config.Config;
 import org.pac4j.jee.config.Pac4jJEEConfig;
+import org.pac4j.jee.context.JEEFrameworkParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -46,7 +47,7 @@ public class CallbackController {
 
         Pac4jJEEConfig.applyJEESettingsIfUndefined(config);
 
-        config.getCallbackLogic().perform(config, defaultUrl, renewSession, defaultClient, request, response);
+        config.getCallbackLogic().perform(config, defaultUrl, renewSession, defaultClient, new JEEFrameworkParameters(request, response));
     }
 
     /**
