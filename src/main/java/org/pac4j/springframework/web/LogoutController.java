@@ -4,8 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.Setter;
+import org.pac4j.core.adapter.FrameworkAdapter;
 import org.pac4j.core.config.Config;
-import org.pac4j.jee.config.Pac4jJEEConfig;
 import org.pac4j.jee.context.JEEFrameworkParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,7 +50,7 @@ public class LogoutController {
     @RequestMapping("${pac4j.logout.path:/logout}")
     public void logout(final HttpServletRequest request, final HttpServletResponse response) {
 
-        Pac4jJEEConfig.applyJEESettingsIfUndefined(config);
+        FrameworkAdapter.INSTANCE.applyDefaultSettingsIfUndefined(config);
 
         config.getLogoutLogic().perform(config, defaultUrl, logoutUrlPattern, localLogout, destroySession, centralLogout, new JEEFrameworkParameters(request, response));
     }

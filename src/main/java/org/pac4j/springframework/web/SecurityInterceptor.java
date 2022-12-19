@@ -5,10 +5,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
+import org.pac4j.core.adapter.FrameworkAdapter;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.util.security.SecurityEndpoint;
 import org.pac4j.core.util.security.SecurityEndpointBuilder;
-import org.pac4j.jee.config.Pac4jJEEConfig;
 import org.pac4j.jee.context.JEEFrameworkParameters;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -96,7 +96,7 @@ public class SecurityInterceptor implements HandlerInterceptor, SecurityEndpoint
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
-        Pac4jJEEConfig.applyJEESettingsIfUndefined(config);
+        FrameworkAdapter.INSTANCE.applyDefaultSettingsIfUndefined(config);
 
         val result = config.getSecurityLogic().perform(config, (ctx, session, profiles, parameters) -> true,
                 clients, authorizers, matchers, new JEEFrameworkParameters(request, response));

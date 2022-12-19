@@ -2,10 +2,10 @@ package org.pac4j.springframework.component;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.pac4j.core.adapter.FrameworkAdapter;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.profile.ProfileManager;
-import org.pac4j.jee.config.Pac4jJEEConfig;
 import org.pac4j.jee.context.JEEContext;
 import org.pac4j.jee.context.JEEFrameworkParameters;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class ComponentConfig {
     @Bean
     @RequestScope
     public SessionStore getSessionStore() {
-        Pac4jJEEConfig.applyJEESettingsIfUndefined(config);
+        FrameworkAdapter.INSTANCE.applyDefaultSettingsIfUndefined(config);
 
         return config.getSessionStoreFactory().newSessionStore(new JEEFrameworkParameters(request, response));
     }
@@ -61,7 +61,7 @@ public class ComponentConfig {
     @Bean
     @RequestScope
     public JEEContext getWebContext() {
-        Pac4jJEEConfig.applyJEESettingsIfUndefined(config);
+        FrameworkAdapter.INSTANCE.applyDefaultSettingsIfUndefined(config);
 
         return new JEEContext(request, response);
     }
