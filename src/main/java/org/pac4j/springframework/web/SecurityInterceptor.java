@@ -98,7 +98,7 @@ public class SecurityInterceptor implements HandlerInterceptor, SecurityEndpoint
 
         FrameworkAdapter.INSTANCE.applyDefaultSettingsIfUndefined(config);
 
-        val result = config.getSecurityLogic().perform(config, (ctx, session, profiles, parameters) -> true,
+        val result = config.getSecurityLogic().perform(config, (ctx, session, profiles) -> true,
                 clients, authorizers, matchers, new JEEFrameworkParameters(request, response));
         if (result == null) {
             return false;
