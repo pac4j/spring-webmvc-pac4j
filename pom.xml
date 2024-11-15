@@ -64,7 +64,7 @@
         <aspectj.version>1.9.22.1</aspectj.version>
         <java.version>17</java.version>
         <pmdVersion>6.55.0</pmdVersion>
-        <lombok.version>1.18.34</lombok.version>
+        <lombok.version>1.18.36</lombok.version>
     </properties>
 
     <dependencies>
