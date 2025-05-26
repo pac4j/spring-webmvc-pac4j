@@ -6,7 +6,7 @@
     <artifactId>spring-webmvc-pac4j</artifactId>
     <packaging>jar</packaging>
     <name>Spring Web MVC security framework based on pac4j</name>
-    <version>8.0.1</version>
+    <version>8.0.2-SNAPSHOT</version>
     <description>Security library for Spring Web MVC based on pac4j</description>
     <url>https://github.com/pac4j/spring-webmvc-pac4j</url>
 
@@ -49,7 +49,7 @@
         <url>https://github.com/pac4j/spring-webmvc-pac4j.git</url>
         <connection>scm:git:git@github.com:pac4j/spring-webmvc-pac4j.git</connection>
         <developerConnection>scm:git:git@github.com:pac4j/spring-webmvc-pac4j.git</developerConnection>
-      <tag>spring-webmvc-pac4j-8.0.1</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <developers>
