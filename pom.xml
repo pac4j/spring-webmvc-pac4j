@@ -63,7 +63,7 @@
     <properties>
         <jakartaee-web-api.version>11.0.0</jakartaee-web-api.version>
         <pac4j.version>6.3.0</pac4j.version>
-        <spring.version>6.2.13</spring.version>
+        <spring.version>7.0.0</spring.version>
         <aspectj.version>1.9.25</aspectj.version>
         <java.version>17</java.version>
         <pmdVersion>6.55.0</pmdVersion>
