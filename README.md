@@ -16,7 +16,7 @@ It's based on the **[pac4j security engine](https://github.com/pac4j/pac4j)**. I
 
 1) A [**client**](https://www.pac4j.org/docs/clients.html) represents an authentication mechanism. It performs the login process and returns a user profile. An indirect client is for web application authentication while a direct client is for web services authentication:
 
-&#9656; OAuth - SAML - CAS - OpenID Connect - HTTP - Google App Engine - LDAP - SQL - JWT - MongoDB - CouchDB - Kerberos - IP address - Kerberos (SPNEGO) - REST API
+&#9656; OpenID Connect - OAuth - SAML - CAS - HTTP - LDAP - SQL - JWT - MongoDB - IP address - Kerberos (SPNEGO) - REST API
 
 2) An [**authorizer**](https://www.pac4j.org/docs/authorizers.html) is meant to check authorizations on the authenticated user profile(s) or on the current web context:
 
