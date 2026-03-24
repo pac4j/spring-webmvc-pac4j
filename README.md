@@ -57,7 +57,7 @@ The demo webapps for Spring Web MVC without Spring Boot: [spring-webmvc-pac4j-de
 
 ## Versions
 
-The latest released version is the [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.pac4j/spring-webmvc-pac4j/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/org.pac4j/spring-webmvc-pac4j), available in the [Maven central repository](https://repo.maven.apache.org/maven2).
+The latest released version is the [![Maven Central](https://img.shields.io/maven-central/v/org.pac4j/spring-webmvc-pac4j.svg)](https://repo1.maven.org/maven2/org/pac4j/spring-webmvc-pac4j).
 The [next version](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Next-version) is under development.
 
 See the [release notes](https://github.com/pac4j/spring-webmvc-pac4j/wiki/Release-Notes).
