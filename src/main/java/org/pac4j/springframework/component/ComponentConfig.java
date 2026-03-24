@@ -74,6 +74,8 @@ public class ComponentConfig {
     @Bean
     @RequestScope
     public ProfileManager getProfileManager() {
+        FrameworkAdapter.INSTANCE.applyDefaultSettingsIfUndefined(config);
+
         return config.getProfileManagerFactory().apply(getWebContext(), getSessionStore());
     }
 }

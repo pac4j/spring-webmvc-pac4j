@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Setter
 public class LogoutController {
 
-    @Value("${pac4j.logout.defaultUrl:#{null}}")
+    @Value("${pac4j.logout.defaultUrl:/}")
     private String defaultUrl;
 
     @Value("${pac4j.logout.logoutUrlPattern:#{null}}")
