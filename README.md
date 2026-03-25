@@ -24,6 +24,8 @@ It's based on the **[pac4j security engine](https://github.com/pac4j/pac4j)**. I
 
 3) A [**matcher**](https://www.pac4j.org/docs/matchers.html) defines whether the `SecurityInterceptor` must be applied and can be used for additional web processing
 
+*Directly available via the `Pac4jSecurityConfig` component:*
+
 4) The `SecurityInterceptor` protects an url by checking that the user is authenticated and that the authorizations are valid, according to the clients and authorizers configuration. If the user is not authenticated, it performs authentication for direct clients or starts the login process for indirect clients
 
 5) The `CallbackController` finishes the login process for an indirect client
