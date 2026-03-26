@@ -54,7 +54,9 @@ It's based on the **[pac4j security engine](https://github.com/pac4j/pac4j)**. I
 
 ## Demos
 
-The demo webapps for Spring Web MVC without Spring Boot: [spring-webmvc-pac4j-demo](https://github.com/pac4j/spring-webmvc-pac4j-demo) or with Spring Boot: [spring-webmvc-pac4j-boot-demo](https://github.com/pac4j/spring-webmvc-pac4j-boot-demo) are available for tests and implement many authentication mechanisms: Facebook, Twitter, form, basic auth, CAS, SAML, OpenID Connect, JWT...
+Start with the [simple-spring-boot-pac4j-demos](https://github.com/pac4j/simple-spring-boot-pac4j-demos) with OIDC, CAS and SAML2 support.
+
+The other demo webapps for Spring Web MVC without Spring Boot: [spring-webmvc-pac4j-demo](https://github.com/pac4j/spring-webmvc-pac4j-demo) or with Spring Boot: [spring-webmvc-pac4j-boot-demo](https://github.com/pac4j/spring-webmvc-pac4j-boot-demo) are available for tests and implement many more authentication mechanisms: Facebook, Twitter, form, basic auth, CAS, SAML, OpenID Connect, JWT...
 
 
 ## Versions
