@@ -39,4 +39,17 @@ public abstract class Pac4jSecurityConfig implements WebMvcConfigurer {
     protected InterceptorRegistration addSecurity(final InterceptorRegistry registry, final Object... parameters) {
         return registry.addInterceptor(SecurityInterceptor.build(config(), parameters));
     }
+
+    /**
+     * Add as security interceptor with a dedicated configuration.
+     *
+     * @param registry the interceptor registry
+     * @param newConfig the new configuration
+     * @param parameters the built parameters
+     * @return the registered interceptor
+     */
+    protected InterceptorRegistration addSecurityWithConfig(final InterceptorRegistry registry,
+                                                            final Config newConfig, final Object... parameters) {
+        return registry.addInterceptor(SecurityInterceptor.build(newConfig, parameters));
+    }
 }
