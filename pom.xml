@@ -61,7 +61,7 @@
         <spring.version>7.0.7</spring.version>
         <aspectj.version>1.9.25.1</aspectj.version>
         <java.version>17</java.version>
-        <lombok.version>1.18.44</lombok.version>
+        <lombok.version>1.18.46</lombok.version>
     </properties>
 
     <dependencies>
