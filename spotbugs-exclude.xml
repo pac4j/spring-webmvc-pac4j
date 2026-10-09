@@ -4,4 +4,8 @@
         <Class name="~.*SecurityInterceptor"/>
         <Bug pattern="EI_EXPOSE_REP2" />
     </Match>
+    <Match>
+        <Class name="~.*DefaultHttpActionExceptionResolver"/>
+        <Bug pattern="EI_EXPOSE_REP2" />
+    </Match>
 </FindBugsFilter>

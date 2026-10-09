@@ -1,5 +1,7 @@
 package org.pac4j.springframework.annotation;
 
+import org.pac4j.core.config.Config;
+import org.pac4j.springframework.web.DefaultHttpActionExceptionResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -22,5 +24,16 @@ public class AnnotationConfig {
     @Bean
     public RequireRoleAnnotationAspect requireRoleAnnotationAspect() {
         return new RequireRoleAnnotationAspect();
+    }
+
+    /**
+     * The exception resolver which turns the HTTP actions thrown by the annotations into HTTP responses.
+     *
+     * @param config the config
+     * @return the exception resolver
+     */
+    @Bean
+    public DefaultHttpActionExceptionResolver defaultHttpActionExceptionResolver(final Config config) {
+        return new DefaultHttpActionExceptionResolver(config);
     }
 }

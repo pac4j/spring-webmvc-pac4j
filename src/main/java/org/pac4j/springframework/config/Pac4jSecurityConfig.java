@@ -4,6 +4,7 @@ import org.pac4j.core.config.Config;
 import org.pac4j.springframework.annotation.AnnotationConfig;
 import org.pac4j.springframework.component.ComponentConfig;
 import org.pac4j.springframework.web.SecurityInterceptor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
@@ -25,8 +26,11 @@ public abstract class Pac4jSecurityConfig implements WebMvcConfigurer {
     /**
      * Build the pac4j configuration.
      *
+     * <p>It is a singleton bean: the controllers, the components and the security interceptors share the same instance.</p>
+     *
      * @return the configuration
      */
+    @Bean
     public abstract Config config();
 
     /**

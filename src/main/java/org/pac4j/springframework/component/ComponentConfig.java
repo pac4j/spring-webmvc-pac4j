@@ -35,9 +35,9 @@ public class ComponentConfig {
     protected HttpServletResponse response;
 
     /**
-     * The security config.
+     * The security config (mandatory: the session store and the profile manager are built from it).
      */
-    @Autowired(required = false)
+    @Autowired
     protected Config config;
 
     /**

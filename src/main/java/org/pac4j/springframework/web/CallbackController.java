@@ -57,7 +57,7 @@ public class CallbackController {
      * @param response the HTTP response
      * @param cn the client name
      */
-    @RequestMapping("${pac4j.callback.path/{cn}:/callback/{cn}}")
+    @RequestMapping("${pac4j.callback.path:/callback}/{cn}")
     public void callbackWithClientName(final HttpServletRequest request, final HttpServletResponse response, @PathVariable("cn") final String cn) {
 
         callback(request, response);
